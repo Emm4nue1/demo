@@ -1,10 +1,8 @@
 package model.paquete;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
-
 import java.io.Serializable;
 
 @Entity
