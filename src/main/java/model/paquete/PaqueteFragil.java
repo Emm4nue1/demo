@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import model.enums.NivelFragilidad;
 
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName = "id")
+@DiscriminatorValue(value="PF")
 
 public class PaqueteFragil extends Paquete {
 
