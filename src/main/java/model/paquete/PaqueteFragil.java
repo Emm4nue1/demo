@@ -1,8 +1,18 @@
 package model.paquete;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import model.enums.NivelFragilidad;
 
+@Entity
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
+
 public class PaqueteFragil extends Paquete {
+
+    @Enumerated(EnumType.STRING)
     private NivelFragilidad nivelFragilidad;
+
+    @NotNull
+    @Column(nullable = false)
     private Boolean seguroAdicional;
 }

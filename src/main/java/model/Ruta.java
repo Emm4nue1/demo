@@ -29,7 +29,7 @@ public class Ruta {
     @JoinColumn(name = "vehiculo_id", nullable = false, unique = true)
     private Vehiculo vehiculo;
 
-    @OneToMany(mappedBy = "ruta", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<Envio> envios = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "ruta_id")
+    private List<Envio> envios;
 }
