@@ -12,7 +12,11 @@ import lombok.*;
 
 @Entity
 @DiscriminatorValue(value="PR")
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PaqueteRefrigerado extends Paquete {
 
     @PositiveOrZero

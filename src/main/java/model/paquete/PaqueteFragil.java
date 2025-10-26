@@ -6,7 +6,11 @@ import lombok.*;
 
 @Entity
 @DiscriminatorValue(value="PF")
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PaqueteFragil extends Paquete {
 
     @Enumerated(EnumType.STRING)
