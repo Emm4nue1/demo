@@ -13,59 +13,12 @@ public class RutaMapper {
     public static RutaDTO toDTO(Ruta ruta) {
         if (ruta == null) return null;
 
-        List<EnvioDTO> enviosDTO = ruta.getEnvios() != null
-                ? ruta.getEnvios().stream()
-                .map(EnvioMapper::toDTO)
-                .collect(Collectors.toList())
-                : Collections.emptyList();
-
-        // Calcular totales de peso y volumen
-        double pesoTotal = enviosDTO.stream()
-                .mapToDouble(EnvioDTO::getPesoTotal)
-                .sum();
-
-        double volumenTotal = enviosDTO.stream()
-                .mapToDouble(EnvioDTO::getVolumenTotal)
-                .sum();
-
-        // Calcular porcentajes de capacidad
-        double porcentajePeso = ruta.getVehiculo() != null && ruta.getVehiculo().getCapPeso() > 0
-                ? (pesoTotal / ruta.getVehiculo().getCapPeso()) * 100
-                : 0.0;
-
-        double porcentajeVolumen = ruta.getVehiculo() != null && ruta.getVehiculo().getCapVolumen() > 0
-                ? (volumenTotal / ruta.getVehiculo().getCapVolumen()) * 100
-                : 0.0;
-
-        return RutaDTO.builder()
-                .id(ruta.getId())
-                .fecha(ruta.getFecha())
-                .vehiculo(VehiculoMapper.toDTO(ruta.getVehiculo()))
-                .envios(enviosDTO)
-                .cantidadEnvios(enviosDTO.size())
-                .pesoTotalCargado(pesoTotal)
-                .volumenTotalCargado(volumenTotal)
-                .porcentajeCapacidadPeso(porcentajePeso)
-                .porcentajeCapacidadVolumen(porcentajeVolumen)
-                .build();
+        return null;
     }
 
     // Convierte DTO a Entity
     public static Ruta toEntity(RutaDTO dto) {
-        if (dto == null) return null;
-
-        List<Envio> envios = dto.getEnvios() != null
-                ? dto.getEnvios().stream()
-                .map(EnvioMapper::toEntity)
-                .collect(Collectors.toList())
-                : Collections.emptyList();
-
-        return Ruta.builder()
-                .id(dto.getId())
-                .fecha(dto.getFecha())
-                .vehiculo(VehiculoMapper.toEntity(dto.getVehiculo()))
-                .envios(envios)
-                .build();
+        return null;
     }
 
     // Método auxiliar para convertir listas

@@ -5,12 +5,12 @@ import model.enums.NivelFragilidad;
 import lombok.*;
 
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName = "id")
+@DiscriminatorValue(value="PF")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class PaqueteFragil extends Paquete {
 
     @Enumerated(EnumType.STRING)
