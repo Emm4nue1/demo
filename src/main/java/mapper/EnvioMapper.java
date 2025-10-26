@@ -1,74 +1,57 @@
 package mapper;
 import dto.EnvioDTO;
-import dto.PaqueteDTO;
+import dto.paquete.PaqueteDTO;
+import dto.paquete.PaqueteFragilDTO;
+import mapper.paquete.PaqueteMapper;
 import model.Envio;
+import model.enums.EstadoEnvio;
+import model.enums.NivelFragilidad;
 import model.paquete.Paquete;
+import model.paquete.PaqueteFragil;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class EnvioMapper {
 
-    // Convierte Entity a DTO
-    public static EnvioDTO toDTO(Envio envio) {
-        if (envio == null) return null;
+    //convertimos de una entidad Envio en DTO
+    public static EnvioDTO toDto(Envio envio){
 
-        List<PaqueteDTO> paquetesDTO = envio.getPaquetes() != null
-                ? envio.getPaquetes().stream()
-                .map(PaqueteMapper::toDTO)
-                .collect(Collectors.toList())
-                : Collections.emptyList();
+        EnvioDTO dto= new EnvioDTO();
+        dto.setRemitente(envio.getRemitente());
+        dto.setDestinatario(envio.getDestinatario());
+        dto.setDireccionEntrega(envio.getDireccionEntrega());
+        dto.setEstadoEnvio(envio.getEstadoEnvio().toString());
+        dto.setComprobanteEntrega(envio.getComprobanteEntrega());
+        if (envio.getPaquetes() != null) {
+            List<PaqueteDTO> paquetesDTO = new ArrayList<>();
+            for (Paquete p : envio.getPaquetes()) {
+                paquetesDTO.add(PaqueteMapper.toSpecificDto(p));
+            }
+            dto.setPaquetes(paquetesDTO);
+        }
 
-        // Calcular totales
-        double pesoTotal = paquetesDTO.stream()
-                .mapToDouble(PaqueteDTO::getPeso)
-                .sum();
-
-        double volumenTotal = paquetesDTO.stream()
-                .mapToDouble(PaqueteDTO::getVolumen)
-                .sum();
-
-        return EnvioDTO.builder()
-                .id(envio.getId())
-                .remitente(envio.getRemitente())
-                .destinatario(envio.getDestinatario())
-                .direccionEntrega(envio.getDireccionEntrega())
-                .estadoEnvio(envio.getEstadoEnvio())
-                .comprobanteEntrega(envio.getComprobanteEntrega())
-                .paquetes(paquetesDTO)
-                .cantidadPaquetes(paquetesDTO.size())
-                .pesoTotal(pesoTotal)
-                .volumenTotal(volumenTotal)
-                .build();
+        return dto;
     }
 
-    // Convierte DTO a Entity
-    public static Envio toEntity(EnvioDTO dto) {
-        if (dto == null) return null;
+    //convertimos de DTO a entidad Envio
+    public static Envio toEntity(EnvioDTO dto){
 
-        List<Paquete> paquetes = dto.getPaquetes() != null
-                ? dto.getPaquetes().stream()
-                .map(PaqueteMapper::toEntity)
-                .collect(Collectors.toList())
-                : Collections.emptyList();
-
-        return Envio.builder()
-                .id(dto.getId())
-                .remitente(dto.getRemitente())
-                .destinatario(dto.getDestinatario())
-                .direccionEntrega(dto.getDireccionEntrega())
-                .estadoEnvio(dto.getEstadoEnvio())
-                .comprobanteEntrega(dto.getComprobanteEntrega())
-                .paquetes(paquetes)
-                .build();
-    }
-
-    // Método auxiliar para convertir listas
-    public static List<EnvioDTO> toDTOList(List<Envio> envios) {
-        if (envios == null) return Collections.emptyList();
-
-        return envios.stream()
-                .map(EnvioMapper::toDTO)
-                .collect(Collectors.toList());
+        Envio envio= new Envio();
+        envio.setRemitente(dto.getRemitente());
+        envio.setDestinatario(dto.getDestinatario());
+        envio.setDireccionEntrega(dto.getDireccionEntrega());
+        envio.setEstadoEnvio(EstadoEnvio.valueOf(dto.getEstadoEnvio()));
+        envio.setComprobanteEntrega(dto.isComprobanteEntrega());
+        if (dto.getPaquetes() != null) {
+            List<Paquete> paquetes = new ArrayList<>();
+            for (PaqueteDTO pDto : dto.getPaquetes()) {
+                paquetes.add(PaqueteMapper.toSpecificEntity(pDto));
+            }
+            envio.setPaquetes(paquetes);
+        }
+        return envio;
     }
 }
