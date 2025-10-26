@@ -9,5 +9,5 @@ import java.util.List;
 public interface EnvioRepository extends JpaRepository<Envio,Long> {
     List<Envio> findByRemitente(String remitente);
     List<Envio> findByDestinatario(String destinatario);
-    List<Envio> findByEstado(EstadoEnvio estado);
+    List<Envio> findByEstadoEnvio(EstadoEnvio estado);
 }

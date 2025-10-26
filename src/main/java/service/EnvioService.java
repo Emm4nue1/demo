@@ -15,11 +15,10 @@ import java.util.List;
 
 @Service
 public class EnvioService {
+
     private final EnvioRepository envioRepository;
-    private final PaqueteRepository paqueteRepository;
     public EnvioService(EnvioRepository envioRepository, PaqueteRepository paqueteRepository) {
         this.envioRepository = envioRepository;
-        this.paqueteRepository = paqueteRepository;
     }
 
     @Transactional
@@ -61,7 +60,7 @@ public class EnvioService {
 
     @Transactional
     public List<EnvioDTO> listarPorEstado(String estado){
-        List<Envio> envios = envioRepository.findByEstado(EstadoEnvio.valueOf(estado));
+        List<Envio> envios = envioRepository.findByEstadoEnvio(EstadoEnvio.valueOf(estado));
         List<EnvioDTO> listaEnvioDTO= new ArrayList<>();
         for (Envio envio : envios) {
             listaEnvioDTO.add(EnvioMapper.toDto(envio));
