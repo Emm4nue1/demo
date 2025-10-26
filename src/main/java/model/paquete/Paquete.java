@@ -15,8 +15,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type")
+@Inheritance(strategy = InheritanceType.JOINED)
+
 public class Paquete implements Serializable {
 
     @Id

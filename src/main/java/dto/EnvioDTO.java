@@ -1,18 +1,24 @@
 package dto;
-import dto.paquete.PaqueteDTO;
 import lombok.*;
 import model.enums.EstadoEnvio;
 import java.util.List;
 
-@Data
-public class EnvioDTO {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 
+public class EnvioDTO {
+    private Long id;
     private String remitente;
     private String destinatario;
     private String direccionEntrega;
-    private String estadoEnvio;
-    private boolean comprobanteEntrega;
+    private EstadoEnvio estadoEnvio;
+    private Boolean comprobanteEntrega;
     private List<PaqueteDTO> paquetes;
 
-
+    private Integer cantidadPaquetes;
+    private Double pesoTotal;
+    private Double volumenTotal;
 }
