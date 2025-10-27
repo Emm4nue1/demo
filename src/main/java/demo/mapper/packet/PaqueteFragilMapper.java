@@ -1,7 +1,7 @@
 package demo.mapper.packet;
 import demo.dto.packet.PaqueteFragilDTO;
 import demo.model.enums.NivelFragilidad;
-import demo.model.paquete.PaqueteFragil;
+import demo.model.packet.PaqueteFragil;
 
 public class PaqueteFragilMapper {
 

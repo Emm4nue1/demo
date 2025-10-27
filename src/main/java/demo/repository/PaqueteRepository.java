@@ -1,6 +1,6 @@
 package demo.repository;
 
-import demo.model.paquete.Paquete;
+import demo.model.packet.Paquete;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

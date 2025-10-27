@@ -1,6 +1,6 @@
 package demo.mapper.packet;
 import demo.dto.packet.PaqueteRefrigeradoDTO;
-import demo.model.paquete.PaqueteRefrigerado;
+import demo.model.packet.PaqueteRefrigerado;
 
 public class PaqueteRefrigeradoMapper {
 

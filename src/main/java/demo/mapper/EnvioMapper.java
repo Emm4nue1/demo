@@ -4,7 +4,7 @@ import demo.dto.packet.PaqueteDTO;
 import demo.mapper.packet.PaqueteMapper;
 import demo.model.Envio;
 import demo.model.enums.EstadoEnvio;
-import demo.model.paquete.Paquete;
+import demo.model.packet.Paquete;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import demo.model.enums.EstadoEnvio;
-import demo.model.paquete.Paquete;
+import demo.model.packet.Paquete;
 
 import java.util.List;
 @Entity

@@ -3,9 +3,9 @@ package demo.service;
 import demo.dto.packet.PaqueteDTO;
 import jakarta.transaction.Transactional;
 import demo.mapper.packet.PaqueteMapper;
-import demo.model.paquete.Paquete;
-import demo.model.paquete.PaqueteFragil;
-import demo.model.paquete.PaqueteRefrigerado;
+import demo.model.packet.Paquete;
+import demo.model.packet.PaqueteFragil;
+import demo.model.packet.PaqueteRefrigerado;
 import org.springframework.stereotype.Service;
 import demo.repository.PaqueteRepository;
 
