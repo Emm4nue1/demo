@@ -1,8 +1,8 @@
 package service;
 
-import dto.paquete.PaqueteDTO;
+import dto.PaqueteDTO;
 import jakarta.transaction.Transactional;
-import mapper.paquete.PaqueteMapper;
+import mapper.PaqueteMapper;
 import model.paquete.Paquete;
 import model.paquete.PaqueteFragil;
 import model.paquete.PaqueteRefrigerado;
