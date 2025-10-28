@@ -1,18 +1,12 @@
 package mapper;
 import dto.EnvioDTO;
-import dto.paquete.PaqueteDTO;
-import dto.paquete.PaqueteFragilDTO;
-import mapper.paquete.PaqueteMapper;
+import dto.PaqueteDTO;
 import model.Envio;
 import model.enums.EstadoEnvio;
-import model.enums.NivelFragilidad;
 import model.paquete.Paquete;
-import model.paquete.PaqueteFragil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EnvioMapper {
 
@@ -28,7 +22,7 @@ public class EnvioMapper {
         if (envio.getPaquetes() != null) {
             List<PaqueteDTO> paquetesDTO = new ArrayList<>();
             for (Paquete p : envio.getPaquetes()) {
-                paquetesDTO.add(PaqueteMapper.toSpecificDto(p));
+                paquetesDTO.add(PaqueteMapper.toDto(p));
             }
             dto.setPaquetes(paquetesDTO);
         }
@@ -48,7 +42,7 @@ public class EnvioMapper {
         if (dto.getPaquetes() != null) {
             List<Paquete> paquetes = new ArrayList<>();
             for (PaqueteDTO pDto : dto.getPaquetes()) {
-                paquetes.add(PaqueteMapper.toSpecificEntity(pDto));
+                paquetes.add(PaqueteMapper.toEntity(pDto));
             }
             envio.setPaquetes(paquetes);
         }

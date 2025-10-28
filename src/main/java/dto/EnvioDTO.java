@@ -1,7 +1,6 @@
 package dto;
-import dto.paquete.PaqueteDTO;
 import lombok.*;
-import model.enums.EstadoEnvio;
+
 import java.util.List;
 
 @Data
