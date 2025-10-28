@@ -1,6 +1,7 @@
 package model.paquete;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.experimental.SuperBuilder;
 import model.enums.NivelFragilidad;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class PaqueteFragil extends Paquete {
 
     @Enumerated(EnumType.STRING)

@@ -39,7 +39,7 @@ public class Envio {
     @Column(nullable = false,length = 100)
     private Boolean comprobanteEntrega;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "envio_id")
     private List<Paquete> paquetes;
 }

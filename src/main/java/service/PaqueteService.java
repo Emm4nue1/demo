@@ -24,7 +24,7 @@ public class PaqueteService {
         paqueteRepository.findByCodigo(paqueteDTO.getCodigo()).ifPresent(paquete1 -> {
             throw new IllegalArgumentException("Paquete existente");
         });
-        Paquete paquete = PaqueteMapper.toSpecificEntity(paqueteDTO);
+        Paquete paquete = PaqueteMapper.toEntity(paqueteDTO);
         if(paquete.getPeso()<0 || paquete.getVolumen()<0)
             throw new IllegalStateException("Peso negativo");
         if(paquete instanceof PaqueteRefrigerado){
@@ -37,14 +37,14 @@ public class PaqueteService {
                 throw new IllegalStateException("La cantidad de horas fuera de frio no puede ser negativo");
         }
         Paquete paqueteAux = paqueteRepository.save(paquete);
-        return PaqueteMapper.toSpecificDto(paqueteAux);
+        return PaqueteMapper.toDto(paqueteAux);
     }
 
     public List<PaqueteDTO> listarPaquetes() {
         List<Paquete> listaPaquetes = paqueteRepository.findAll();
         List<PaqueteDTO> listaPaqueteDTO = new ArrayList<>();
         for(Paquete p : listaPaquetes){
-            listaPaqueteDTO.add(PaqueteMapper.toSpecificDto(p));
+            listaPaqueteDTO.add(PaqueteMapper.toDto(p));
         }
         return listaPaqueteDTO;
     }
@@ -53,7 +53,7 @@ public class PaqueteService {
         List<PaqueteDTO> listaPaqueteFragilDTO = new ArrayList<>();
         for(Paquete p : listaPaqueteFragil){
             if(p instanceof PaqueteFragil){
-                listaPaqueteFragilDTO.add(PaqueteMapper.toSpecificDto(p));
+                listaPaqueteFragilDTO.add(PaqueteMapper.toDto(p));
             }
         }
         return listaPaqueteFragilDTO;
@@ -63,7 +63,7 @@ public class PaqueteService {
         List<PaqueteDTO> listaPaqueteRefrigeradoDTO = new ArrayList<>();
         for(Paquete p : listaPaqueteRefrigerado){
             if(p instanceof PaqueteRefrigerado){
-                listaPaqueteRefrigeradoDTO.add(PaqueteMapper.toSpecificDto(p));
+                listaPaqueteRefrigeradoDTO.add(PaqueteMapper.toDto(p));
             }
         }
         return listaPaqueteRefrigeradoDTO;
@@ -72,7 +72,7 @@ public class PaqueteService {
         List<Paquete> listaPaqueteRangoPeso = paqueteRepository.findByPesoBetween(min,max);
         List<PaqueteDTO> listaPaqueteRangoDTO = new ArrayList<>();
         for(Paquete p :  listaPaqueteRangoPeso){
-            listaPaqueteRangoDTO.add(PaqueteMapper.toSpecificDto(p));
+            listaPaqueteRangoDTO.add(PaqueteMapper.toDto(p));
         }
         return listaPaqueteRangoDTO;
     }
@@ -80,7 +80,7 @@ public class PaqueteService {
         List<Paquete> listaPaqueteRangoVolumen = paqueteRepository.findByVolumenBetween(min,max);
         List<PaqueteDTO> listaPaqueteRangoDTO = new ArrayList<>();
         for(Paquete p :  listaPaqueteRangoVolumen){
-            listaPaqueteRangoDTO.add(PaqueteMapper.toSpecificDto(p));
+            listaPaqueteRangoDTO.add(PaqueteMapper.toDto(p));
         }
         return listaPaqueteRangoDTO;
     }
