@@ -1,8 +1,8 @@
-package model.paquete;
+package com.example.demo.model.paquete;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.experimental.SuperBuilder;
-import model.enums.NivelFragilidad;
+import com.example.demo.model.enums.NivelFragilidad;
 import lombok.*;
 
 @Entity

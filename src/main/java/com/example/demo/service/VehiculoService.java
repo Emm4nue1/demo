@@ -1,10 +1,10 @@
-package service;
-import dto.VehiculoDTO;
+package com.example.demo.service;
+import com.example.demo.dto.VehiculoDTO;
 import jakarta.transaction.Transactional;
-import mapper.VehiculoMapper;
-import model.Vehiculo;
+import com.example.demo.mapper.VehiculoMapper;
+import com.example.demo.model.Vehiculo;
 import org.springframework.stereotype.Service;
-import repository.VehiculoRepository;
+import com.example.demo.repository.VehiculoRepository;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,8 @@
 package service;
 
 import com.example.demo.DemoApplication;
-import dto.VehiculoDTO;
+import com.example.demo.dto.VehiculoDTO;
+import com.example.demo.service.VehiculoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

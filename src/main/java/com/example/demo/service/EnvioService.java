@@ -1,14 +1,13 @@
-package service;
+package com.example.demo.service;
 
-import dto.EnvioDTO;
+import com.example.demo.dto.EnvioDTO;
 import jakarta.transaction.Transactional;
-import mapper.EnvioMapper;
-import model.Envio;
-import model.enums.EstadoEnvio;
-import model.paquete.Paquete;
+import com.example.demo.mapper.EnvioMapper;
+import com.example.demo.model.Envio;
+import com.example.demo.model.enums.EstadoEnvio;
 import org.springframework.stereotype.Service;
-import repository.EnvioRepository;
-import repository.PaqueteRepository;
+import com.example.demo.repository.EnvioRepository;
+import com.example.demo.repository.PaqueteRepository;
 
 import java.util.ArrayList;
 import java.util.List;

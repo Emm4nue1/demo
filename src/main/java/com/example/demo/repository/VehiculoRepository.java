@@ -1,5 +1,5 @@
-package repository;
-import model.Vehiculo;
+package com.example.demo.repository;
+import com.example.demo.model.Vehiculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

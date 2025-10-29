@@ -1,10 +1,13 @@
 package service;
 
 import com.example.demo.DemoApplication;
-import dto.EnvioDTO;
-import dto.PaqueteDTO;
-import dto.RutaDTO;
-import dto.VehiculoDTO;
+import com.example.demo.dto.EnvioDTO;
+import com.example.demo.dto.PaqueteDTO;
+import com.example.demo.dto.RutaDTO;
+import com.example.demo.dto.VehiculoDTO;
+import com.example.demo.service.EnvioService;
+import com.example.demo.service.RutaService;
+import com.example.demo.service.VehiculoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

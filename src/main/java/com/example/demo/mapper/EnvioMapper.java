@@ -1,9 +1,9 @@
-package mapper;
-import dto.EnvioDTO;
-import dto.PaqueteDTO;
-import model.Envio;
-import model.enums.EstadoEnvio;
-import model.paquete.Paquete;
+package com.example.demo.mapper;
+import com.example.demo.dto.EnvioDTO;
+import com.example.demo.dto.PaqueteDTO;
+import com.example.demo.model.Envio;
+import com.example.demo.model.enums.EstadoEnvio;
+import com.example.demo.model.paquete.Paquete;
 
 import java.util.ArrayList;
 import java.util.List;

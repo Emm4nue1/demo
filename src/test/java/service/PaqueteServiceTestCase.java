@@ -1,12 +1,12 @@
 package service;
 
 import com.example.demo.DemoApplication;
-import dto.PaqueteDTO;
+import com.example.demo.dto.PaqueteDTO;
+import com.example.demo.service.PaqueteService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.platform.commons.function.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

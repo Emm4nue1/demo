@@ -1,4 +1,4 @@
-package dto;
+package com.example.demo.dto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

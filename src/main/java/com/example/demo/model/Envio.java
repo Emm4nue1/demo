@@ -1,10 +1,10 @@
-package model;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import model.enums.EstadoEnvio;
-import model.paquete.Paquete;
+import com.example.demo.model.enums.EstadoEnvio;
+import com.example.demo.model.paquete.Paquete;
 
 import java.util.List;
 @Entity
@@ -36,7 +36,7 @@ public class Envio {
     @Column(nullable = false,length = 100)
     private EstadoEnvio estadoEnvio;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false)
     private Boolean comprobanteEntrega;
 
     @OneToMany(cascade = CascadeType.ALL)

@@ -1,11 +1,10 @@
-package model;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +24,7 @@ public class Ruta {
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "vehiculo_id", nullable = false, unique = true)
     private Vehiculo vehiculo;
 

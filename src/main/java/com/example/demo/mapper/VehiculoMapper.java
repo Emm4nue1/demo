@@ -1,6 +1,6 @@
-package mapper;
-import dto.VehiculoDTO;
-import model.Vehiculo;
+package com.example.demo.mapper;
+import com.example.demo.dto.VehiculoDTO;
+import com.example.demo.model.Vehiculo;
 
 
 public class VehiculoMapper {

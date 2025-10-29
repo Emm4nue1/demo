@@ -1,13 +1,13 @@
-package service;
+package com.example.demo.service;
 
-import dto.PaqueteDTO;
+import com.example.demo.dto.PaqueteDTO;
 import jakarta.transaction.Transactional;
-import mapper.PaqueteMapper;
-import model.paquete.Paquete;
-import model.paquete.PaqueteFragil;
-import model.paquete.PaqueteRefrigerado;
+import com.example.demo.mapper.PaqueteMapper;
+import com.example.demo.model.paquete.Paquete;
+import com.example.demo.model.paquete.PaqueteFragil;
+import com.example.demo.model.paquete.PaqueteRefrigerado;
 import org.springframework.stereotype.Service;
-import repository.PaqueteRepository;
+import com.example.demo.repository.PaqueteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
