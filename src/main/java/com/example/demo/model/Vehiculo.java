@@ -35,11 +35,11 @@ public class Vehiculo {
     @Column(nullable = false)
     private Boolean refrigerado;
 
-    @NotNull
+    //Un vehículo no refrigerado NO debería tener temperatura por eso saco el @NotNull
     @Column(name = "rang_temp_min")
     private Double rangTempMin;
 
-    @NotNull
+    //Un vehículo no refrigerado NO debería tener temperatura por eso saco el @NotNull
     @Column(name = "rang_temp_max")
     private Double rangTempMax;
 }

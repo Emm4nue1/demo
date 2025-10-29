@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = DemoApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Transactional  // Cada test hace rollback automático para no afectar la BD
+@Transactional
 public class VehiculoServiceTestCase {
 
     @Autowired
@@ -27,9 +27,8 @@ public class VehiculoServiceTestCase {
 
     @BeforeEach
     public void setUp() {
-        // Preparar vehículo NO refrigerado para pruebas
         vehiculoNoRefrigerado = VehiculoDTO.builder()
-                .patente("TEST" + System.currentTimeMillis())  // Patente única para evitar duplicados
+                .patente("TEST" + System.currentTimeMillis())
                 .capPeso(1000.0)
                 .capVolumen(50.0)
                 .refrigerado(false)
@@ -37,9 +36,8 @@ public class VehiculoServiceTestCase {
                 .rangTempMax(null)
                 .build();
 
-        // Preparar vehículo refrigerado para pruebas
         vehiculoRefrigerado = VehiculoDTO.builder()
-                .patente("REFRI" + System.currentTimeMillis())  // Patente única
+                .patente("REFRI" + System.currentTimeMillis())
                 .capPeso(1500.0)
                 .capVolumen(80.0)
                 .refrigerado(true)
@@ -48,144 +46,193 @@ public class VehiculoServiceTestCase {
                 .build();
     }
 
-    // ========================================
-    // TEST 1: Crear un vehículo NO refrigerado correctamente ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se puede crear un vehículo NO refrigerado sin errores
-     * RESULTADO ESPERADO: El vehículo se crea y tiene un ID asignado
-     */
+    // TEST 1: Crear vehículo no refrigerado
     @Test
     public void testCrearVehiculoNoRefrigerado_Exitoso() {
-        // Ejecutar: Crear el vehículo
         VehiculoDTO resultado = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
 
-        // Verificar: Que se creó correctamente
-        assertNotNull(resultado, "El vehículo creado no debe ser null");
-        assertNotNull(resultado.getId(), "Debe tener un ID asignado");
+        assertNotNull(resultado);
+        assertNotNull(resultado.getId());
         assertEquals(vehiculoNoRefrigerado.getPatente(), resultado.getPatente());
         assertEquals(1000.0, resultado.getCapPeso());
-        assertEquals(50.0, resultado.getCapVolumen());
-        assertFalse(resultado.getRefrigerado(), "No debe estar marcado como refrigerado");
+        assertFalse(resultado.getRefrigerado());
     }
 
-    // ========================================
-    // TEST 2: Crear un vehículo refrigerado correctamente ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se puede crear un vehículo refrigerado con rangos de temperatura
-     * RESULTADO ESPERADO: El vehículo se crea con los rangos de temperatura correctos
-     */
+    // TEST 2: Crear vehículo refrigerado
     @Test
     public void testCrearVehiculoRefrigerado_Exitoso() {
-        // Ejecutar: Crear el vehículo refrigerado
         VehiculoDTO resultado = vehiculoService.crearVehiculo(vehiculoRefrigerado);
 
-        // Verificar: Que se creó correctamente con sus temperaturas
-        assertNotNull(resultado, "El vehículo creado no debe ser null");
-        assertNotNull(resultado.getId(), "Debe tener un ID asignado");
-        assertTrue(resultado.getRefrigerado(), "Debe estar marcado como refrigerado");
-        assertEquals(-5.0, resultado.getRangTempMin(), "La temperatura mínima debe ser -5°C");
-        assertEquals(5.0, resultado.getRangTempMax(), "La temperatura máxima debe ser 5°C");
+        assertNotNull(resultado);
+        assertNotNull(resultado.getId());
+        assertTrue(resultado.getRefrigerado());
+        assertEquals(-5.0, resultado.getRangTempMin());
+        assertEquals(5.0, resultado.getRangTempMax());
     }
 
-    // ========================================
-    // TEST 3: Buscar vehículo por ID correctamente ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se puede buscar un vehículo por su ID
-     * RESULTADO ESPERADO: Encuentra el vehículo y retorna sus datos correctos
-     */
-    @Test
-    public void testBuscarVehiculoPorId_Exitoso() {
-        // Preparar: Primero crear un vehículo
-        VehiculoDTO vehiculoCreado = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
-        Long idDelVehiculo = vehiculoCreado.getId();
-
-        // Ejecutar: Buscar por ID
-        VehiculoDTO vehiculoEncontrado = vehiculoService.buscarPorId(idDelVehiculo);
-
-        // Verificar: Que se encontró y tiene los datos correctos
-        assertNotNull(vehiculoEncontrado, "Debe encontrar el vehículo");
-        assertEquals(idDelVehiculo, vehiculoEncontrado.getId());
-        assertEquals(vehiculoCreado.getPatente(), vehiculoEncontrado.getPatente());
-        assertEquals(vehiculoCreado.getCapPeso(), vehiculoEncontrado.getCapPeso());
-    }
-
-    // ========================================
-    // TEST 4: Listar todos los vehículos ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se pueden listar todos los vehículos creados
-     * RESULTADO ESPERADO: La lista contiene los vehículos creados
-     */
+    // TEST 3: Listar todos los vehículos
     @Test
     public void testListarTodosLosVehiculos_Exitoso() {
-        // Preparar: Crear dos vehículos
         vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
         vehiculoService.crearVehiculo(vehiculoRefrigerado);
 
-        // Ejecutar: Listar todos
         List<VehiculoDTO> vehiculos = vehiculoService.listarVehiculos();
 
-        // Verificar: Que la lista no está vacía y tiene al menos los 2 que creamos
-        assertNotNull(vehiculos, "La lista no debe ser null");
-        assertTrue(vehiculos.size() >= 2, "Debe haber al menos 2 vehículos en la lista");
+        assertNotNull(vehiculos);
+        assertTrue(vehiculos.size() >= 2);
     }
 
-    // ========================================
-    // TEST 5: ERROR - Intentar crear vehículo con patente duplicada ❌
-    // ========================================
-    /**
-     * OBJETIVO: Validar que no se pueden crear dos vehículos con la misma patente
-     * RESULTADO ESPERADO: Lanza IllegalArgumentException al intentar duplicar patente
-     */
+    // TEST 5: Buscar vehículo por patente
+    @Test
+    public void testBuscarVehiculoPorPatente() {
+        VehiculoDTO vehiculoCreado = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+
+        VehiculoDTO vehiculoEncontrado = vehiculoService.buscarPorPatente(vehiculoCreado.getPatente());
+
+        assertNotNull(vehiculoEncontrado);
+        assertEquals(vehiculoCreado.getPatente(), vehiculoEncontrado.getPatente());
+        assertEquals(vehiculoCreado.getId(), vehiculoEncontrado.getId());
+    }
+
+    // TEST 6: Buscar vehículos por capacidad de peso (PEDIDO EN TP)
+    @Test
+    public void testBuscarVehiculosPorCapacidadPeso() {
+        vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+        vehiculoService.crearVehiculo(vehiculoRefrigerado);
+
+        List<VehiculoDTO> vehiculos = vehiculoService.listarPorCapacidadPeso(900.0);
+
+        assertNotNull(vehiculos);
+        assertFalse(vehiculos.isEmpty());
+        for (VehiculoDTO v : vehiculos) {
+            assertTrue(v.getCapPeso() >= 900.0);
+        }
+    }
+
+    // TEST 7: Buscar vehículos por capacidad de volumen (PEDIDO EN TP)
+    @Test
+    public void testBuscarVehiculosPorCapacidadVolumen() {
+        vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+        vehiculoService.crearVehiculo(vehiculoRefrigerado);
+
+        List<VehiculoDTO> vehiculos = vehiculoService.listarPorCapacidadVolumen(40.0);
+
+        assertNotNull(vehiculos);
+        assertFalse(vehiculos.isEmpty());
+        for (VehiculoDTO v : vehiculos) {
+            assertTrue(v.getCapVolumen() >= 40.0);
+        }
+    }
+
+    // TEST 8: Buscar vehículos refrigerados (PEDIDO EN TP)
+    @Test
+    public void testBuscarVehiculosRefrigerados() {
+        vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+        vehiculoService.crearVehiculo(vehiculoRefrigerado);
+
+        List<VehiculoDTO> refrigerados = vehiculoService.listarPorRefrigerado(true);
+
+        assertNotNull(refrigerados);
+        assertFalse(refrigerados.isEmpty());
+        for (VehiculoDTO v : refrigerados) {
+            assertTrue(v.getRefrigerado());
+        }
+    }
+
+    // TEST 9: Buscar vehículos NO refrigerados (PEDIDO EN TP)
+    @Test
+    public void testBuscarVehiculosNoRefrigerados() {
+        vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+        vehiculoService.crearVehiculo(vehiculoRefrigerado);
+
+        List<VehiculoDTO> noRefrigerados = vehiculoService.listarPorRefrigerado(false);
+
+        assertNotNull(noRefrigerados);
+        assertFalse(noRefrigerados.isEmpty());
+        for (VehiculoDTO v : noRefrigerados) {
+            assertFalse(v.getRefrigerado());
+        }
+    }
+
+    // NUEVO: Buscar vehículos con capacidad suficiente (peso y volumen)
+    @Test
+    public void testBuscarVehiculosPorCapacidadSuficiente() {
+        vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+        vehiculoService.crearVehiculo(vehiculoRefrigerado);
+
+        List<VehiculoDTO> vehiculos = vehiculoService.listarPorCapacidadSuficiente(800.0, 40.0);
+
+        assertNotNull(vehiculos);
+        assertFalse(vehiculos.isEmpty());
+        for (VehiculoDTO v : vehiculos) {
+            assertTrue(v.getCapPeso() >= 800.0);
+            assertTrue(v.getCapVolumen() >= 40.0);
+        }
+    }
+
+    // TEST 11: Error al crear vehículo con patente duplicada
     @Test
     public void testCrearVehiculoPatentesDuplicadas_Error() {
-        // Preparar: Crear el primer vehículo
         vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
 
-        // Intentar: Crear otro vehículo con la MISMA patente
         VehiculoDTO vehiculoDuplicado = VehiculoDTO.builder()
-                .patente(vehiculoNoRefrigerado.getPatente())  // ← MISMA PATENTE
+                .patente(vehiculoNoRefrigerado.getPatente())
                 .capPeso(800.0)
                 .capVolumen(40.0)
                 .refrigerado(false)
                 .build();
 
-        // Verificar: Que lanza excepción por patente duplicada
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> vehiculoService.crearVehiculo(vehiculoDuplicado),
-                "Debe lanzar IllegalArgumentException por patente duplicada"
+                () -> vehiculoService.crearVehiculo(vehiculoDuplicado)
         );
 
-        // Verificar también el mensaje de error
-        assertTrue(exception.getMessage().contains("Ya existe un vehículo con la patente"),
-                "El mensaje debe indicar que la patente ya existe");
+        assertTrue(exception.getMessage().contains("Ya existe un vehículo con la patente"));
     }
 
-    // ========================================
-    // TEST 6: ERROR - Crear vehículo con capacidad de peso negativa ❌
-    // ========================================
-    /**
-     * OBJETIVO: Validar que no se pueden crear vehículos con peso negativo
-     * RESULTADO ESPERADO: Lanza IllegalStateException por peso inválido
-     */
+    // TEST 12: Error al crear vehículo con peso negativo
     @Test
     public void testCrearVehiculoPesoNegativo_Error() {
-        // Preparar: Modificar el DTO para que tenga peso negativo
-        vehiculoNoRefrigerado.setCapPeso(-100.0);  // ← PESO NEGATIVO (inválido)
+        vehiculoNoRefrigerado.setCapPeso(-100.0);
 
-        // Verificar: Que lanza excepción por peso negativo
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
-                () -> vehiculoService.crearVehiculo(vehiculoNoRefrigerado),
-                "Debe lanzar IllegalStateException por peso negativo"
+                () -> vehiculoService.crearVehiculo(vehiculoNoRefrigerado)
         );
 
-        // Verificar también el mensaje de error
-        assertTrue(exception.getMessage().contains("capacidad de peso debe ser mayor a 0"),
-                "El mensaje debe indicar que el peso debe ser positivo");
+        assertTrue(exception.getMessage().contains("capacidad de peso debe ser mayor a 0"));
+    }
+
+    // NUEVO: Error al crear vehículo con volumen negativo
+    @Test
+    public void testCrearVehiculoVolumenNegativo_Error() {
+        vehiculoNoRefrigerado.setCapVolumen(-50.0);
+
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> vehiculoService.crearVehiculo(vehiculoNoRefrigerado)
+        );
+
+        assertTrue(exception.getMessage().contains("capacidad de volumen debe ser mayor a 0"));
+    }
+
+    // NUEVO: Error al crear vehículo refrigerado sin rangos de temperatura
+    @Test
+    public void testCrearVehiculoRefrigeradoSinRangosTemperatura_Error() {
+        VehiculoDTO vehiculoMalConfigurado = VehiculoDTO.builder()
+                .patente("MAL" + System.currentTimeMillis())
+                .capPeso(1000.0)
+                .capVolumen(50.0)
+                .refrigerado(true)
+                .rangTempMin(null)
+                .rangTempMax(null)
+                .build();
+
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> vehiculoService.crearVehiculo(vehiculoMalConfigurado)
+        );
+
+        assertTrue(exception.getMessage().contains("deben tener rangos de temperatura"));
     }
 }

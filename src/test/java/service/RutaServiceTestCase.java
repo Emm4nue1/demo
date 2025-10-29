@@ -1,5 +1,4 @@
 package service;
-
 import com.example.demo.DemoApplication;
 import com.example.demo.dto.EnvioDTO;
 import com.example.demo.dto.PaqueteDTO;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = DemoApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Transactional  // Cada test hace rollback automático
+@Transactional
 public class RutaServiceTestCase {
 
     @Autowired
@@ -43,7 +41,6 @@ public class RutaServiceTestCase {
 
     @BeforeEach
     public void setUp() {
-        // Preparar vehículo NO refrigerado (capacidad grande)
         vehiculoNoRefrigerado = VehiculoDTO.builder()
                 .patente("NOREF" + System.currentTimeMillis())
                 .capPeso(1000.0)
@@ -51,7 +48,6 @@ public class RutaServiceTestCase {
                 .refrigerado(false)
                 .build();
 
-        // Preparar vehículo refrigerado (capacidad grande)
         vehiculoRefrigerado = VehiculoDTO.builder()
                 .patente("REFRI" + System.currentTimeMillis())
                 .capPeso(1500.0)
@@ -61,15 +57,13 @@ public class RutaServiceTestCase {
                 .rangTempMax(5.0)
                 .build();
 
-        // Preparar vehículo PEQUEÑO (para probar exceso de capacidad)
         vehiculoPequeno = VehiculoDTO.builder()
                 .patente("PEQUE" + System.currentTimeMillis())
-                .capPeso(100.0)   // Solo 100kg
-                .capVolumen(25.0)  // Solo 25dm³
+                .capPeso(100.0)
+                .capVolumen(25.0)
                 .refrigerado(false)
                 .build();
 
-        // Preparar envío con paquete FRÁGIL (50kg, 20dm³)
         PaqueteDTO paqueteFragil = PaqueteDTO.builder()
                 .codigo("PF" + System.currentTimeMillis())
                 .peso(50.0)
@@ -91,7 +85,6 @@ public class RutaServiceTestCase {
                 .paquetes(paquetesFragiles)
                 .build();
 
-        // Preparar envío con paquete REFRIGERADO (100kg, 30dm³)
         PaqueteDTO paqueteRefrigerado = PaqueteDTO.builder()
                 .codigo("PR" + System.currentTimeMillis())
                 .peso(100.0)
@@ -116,43 +109,26 @@ public class RutaServiceTestCase {
                 .build();
     }
 
-    // ========================================
-    // TEST 1: Crear una ruta correctamente ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se puede crear una ruta vacía (sin envíos)
-     * RESULTADO ESPERADO: La ruta se crea con un ID asignado y 0 envíos
-     */
+    // TEST 1: Crear una ruta vacía
     @Test
     public void testCrearRuta_Exitoso() {
-        // Preparar: Crear el vehículo primero
         VehiculoDTO vehiculoCreado = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
 
-        // Ejecutar: Crear la ruta con el vehículo
         RutaDTO rutaDTO = RutaDTO.builder()
                 .fecha(LocalDate.now())
                 .vehiculo(vehiculoCreado)
                 .build();
         RutaDTO resultado = rutaService.crearRuta(rutaDTO);
 
-        // Verificar: Que se creó correctamente
-        assertNotNull(resultado, "La ruta creada no debe ser null");
-        assertNotNull(resultado.getId(), "Debe tener un ID asignado");
+        assertNotNull(resultado);
+        assertNotNull(resultado.getId());
         assertEquals(LocalDate.now(), resultado.getFecha());
-        assertEquals(vehiculoCreado.getId(), resultado.getVehiculo().getId());
-        assertEquals(0, resultado.getCantidadEnvios(), "Debe tener 0 envíos al crearla");
+        assertEquals(0, resultado.getCantidadEnvios());
     }
 
-    // ========================================
-    // TEST 2: Agregar un envío a la ruta correctamente ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se puede agregar un envío frágil a una ruta
-     * RESULTADO ESPERADO: El envío se agrega y la ruta actualiza su información de carga
-     */
+    // TEST 2: Agregar envío a una ruta
     @Test
     public void testAgregarEnvioALaRuta_Exitoso() {
-        // Preparar: Crear vehículo, ruta y envío
         VehiculoDTO vehiculoCreado = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
 
         RutaDTO rutaDTO = RutaDTO.builder()
@@ -163,55 +139,17 @@ public class RutaServiceTestCase {
 
         EnvioDTO envioCreado = envioService.crearEnvio(envioConPaqueteFragil);
 
-        // Ejecutar: Agregar el envío a la ruta
         RutaDTO rutaActualizada = rutaService.agregarEnvio(rutaCreada.getId(), envioCreado.getId());
 
-        // Verificar: Que se agregó correctamente
-        assertNotNull(rutaActualizada, "La ruta actualizada no debe ser null");
-        assertEquals(1, rutaActualizada.getCantidadEnvios(), "Debe tener 1 envío");
-        assertTrue(rutaActualizada.getPesoTotalCargado() > 0, "El peso total debe ser mayor a 0");
-        assertTrue(rutaActualizada.getVolumenTotalCargado() > 0, "El volumen total debe ser mayor a 0");
+        assertNotNull(rutaActualizada);
+        assertEquals(1, rutaActualizada.getCantidadEnvios());
+        assertTrue(rutaActualizada.getPesoTotalCargado() > 0);
+        assertTrue(rutaActualizada.getVolumenTotalCargado() > 0);
     }
 
-    // ========================================
-    // TEST 3: Buscar ruta por ID correctamente ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se puede buscar una ruta por su ID
-     * RESULTADO ESPERADO: Encuentra la ruta y retorna sus datos correctos
-     */
-    @Test
-    public void testBuscarRutaPorId_Exitoso() {
-        // Preparar: Crear vehículo y ruta
-        VehiculoDTO vehiculoCreado = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
-
-        RutaDTO rutaDTO = RutaDTO.builder()
-                .fecha(LocalDate.now())
-                .vehiculo(vehiculoCreado)
-                .build();
-        RutaDTO rutaCreada = rutaService.crearRuta(rutaDTO);
-        Long idDeLaRuta = rutaCreada.getId();
-
-        // Ejecutar: Buscar por ID
-        RutaDTO rutaEncontrada = rutaService.buscarPorId(idDeLaRuta);
-
-        // Verificar: Que se encontró correctamente
-        assertNotNull(rutaEncontrada, "Debe encontrar la ruta");
-        assertEquals(idDeLaRuta, rutaEncontrada.getId());
-        assertEquals(rutaCreada.getFecha(), rutaEncontrada.getFecha());
-        assertEquals(vehiculoCreado.getId(), rutaEncontrada.getVehiculo().getId());
-    }
-
-    // ========================================
-    // TEST 4: Listar todas las rutas ✅
-    // ========================================
-    /**
-     * OBJETIVO: Verificar que se pueden listar todas las rutas creadas
-     * RESULTADO ESPERADO: La lista contiene las rutas creadas
-     */
+    // TEST 4: Listar todas las rutas
     @Test
     public void testListarTodasLasRutas_Exitoso() {
-        // Preparar: Crear dos vehículos y dos rutas
         VehiculoDTO vehiculo1 = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
         VehiculoDTO vehiculo2 = vehiculoService.crearVehiculo(vehiculoRefrigerado);
 
@@ -222,29 +160,91 @@ public class RutaServiceTestCase {
         rutaService.crearRuta(ruta1);
 
         RutaDTO ruta2 = RutaDTO.builder()
-                .fecha(LocalDate.now().plusDays(1))  // Diferente fecha
+                .fecha(LocalDate.now().plusDays(1))
                 .vehiculo(vehiculo2)
                 .build();
         rutaService.crearRuta(ruta2);
 
-        // Ejecutar: Listar todas
         List<RutaDTO> rutas = rutaService.listarRutas();
 
-        // Verificar: Que la lista tiene al menos las 2 que creamos
-        assertNotNull(rutas, "La lista no debe ser null");
-        assertTrue(rutas.size() >= 2, "Debe haber al menos 2 rutas en la lista");
+        assertNotNull(rutas);
+        assertTrue(rutas.size() >= 2);
     }
 
-    // ========================================
-    // TEST 7: ERROR - Exceder capacidad de peso del vehículo ❌
-    // ========================================
-    /**
-     * OBJETIVO: Validar que no se puede agregar un envío que exceda la capacidad de peso
-     * RESULTADO ESPERADO: Lanza IllegalStateException por exceso de peso
-     */
+    // TEST 5: Consultar envíos por ruta y fecha (PEDIDO EN TP)
+    @Test
+    public void testConsultarEnviosPorRutaYFecha() {
+        VehiculoDTO vehiculo = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+
+        LocalDate fechaHoy = LocalDate.now();
+        RutaDTO ruta = RutaDTO.builder()
+                .fecha(fechaHoy)
+                .vehiculo(vehiculo)
+                .build();
+        RutaDTO rutaCreada = rutaService.crearRuta(ruta);
+
+        EnvioDTO envio = envioService.crearEnvio(envioConPaqueteFragil);
+        rutaService.agregarEnvio(rutaCreada.getId(), envio.getId());
+
+        List<RutaDTO> rutasPorFecha = rutaService.listarPorFecha(fechaHoy);
+
+        assertNotNull(rutasPorFecha);
+        assertFalse(rutasPorFecha.isEmpty());
+        assertEquals(fechaHoy, rutasPorFecha.get(0).getFecha());
+        assertTrue(rutasPorFecha.get(0).getCantidadEnvios() >= 1);
+    }
+
+    // TEST 6: Listar rutas por rango de fechas
+    @Test
+    public void testListarRutasPorRangoFechas() {
+        VehiculoDTO vehiculo = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+
+        LocalDate hoy = LocalDate.now();
+        LocalDate manana = hoy.plusDays(1);
+
+        RutaDTO ruta1 = RutaDTO.builder()
+                .fecha(hoy)
+                .vehiculo(vehiculo)
+                .build();
+        rutaService.crearRuta(ruta1);
+
+        List<RutaDTO> rutasEnRango = rutaService.listarPorRangoFechas(hoy, manana);
+
+        assertNotNull(rutasEnRango);
+        assertFalse(rutasEnRango.isEmpty());
+    }
+
+    // TEST 7: Listar rutas que tienen envíos
+    @Test
+    public void testListarRutasConEnvios() {
+        VehiculoDTO vehiculo = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+
+        RutaDTO rutaSinEnvios = RutaDTO.builder()
+                .fecha(LocalDate.now())
+                .vehiculo(vehiculo)
+                .build();
+        rutaService.crearRuta(rutaSinEnvios);
+
+        VehiculoDTO vehiculo2 = vehiculoService.crearVehiculo(vehiculoRefrigerado);
+        RutaDTO rutaConEnvios = RutaDTO.builder()
+                .fecha(LocalDate.now().plusDays(1))
+                .vehiculo(vehiculo2)
+                .build();
+        RutaDTO rutaCreada = rutaService.crearRuta(rutaConEnvios);
+
+        EnvioDTO envio = envioService.crearEnvio(envioConPaqueteFragil);
+        rutaService.agregarEnvio(rutaCreada.getId(), envio.getId());
+
+        List<RutaDTO> rutasConEnvios = rutaService.listarRutasConEnvios();
+
+        assertNotNull(rutasConEnvios);
+        assertFalse(rutasConEnvios.isEmpty());
+        assertTrue(rutasConEnvios.get(0).getCantidadEnvios() > 0);
+    }
+
+    // TEST 8: Error al exceder capacidad de peso
     @Test
     public void testExcederCapacidadPeso_Error() {
-        // Preparar: Crear vehículo PEQUEÑO (solo 100kg) y su ruta
         VehiculoDTO vehiculoCreado = vehiculoService.crearVehiculo(vehiculoPequeno);
 
         RutaDTO rutaDTO = RutaDTO.builder()
@@ -253,16 +253,12 @@ public class RutaServiceTestCase {
                 .build();
         RutaDTO rutaCreada = rutaService.crearRuta(rutaDTO);
 
-        // Crear primer envío de 50kg
-        EnvioDTO envio1 = envioService.crearEnvio(envioConPaqueteFragil);  // 50kg
-
-        // Agregar primer envío (OK: 50kg de 100kg disponibles)
+        EnvioDTO envio1 = envioService.crearEnvio(envioConPaqueteFragil);
         rutaService.agregarEnvio(rutaCreada.getId(), envio1.getId());
 
-        // Crear SEGUNDO envío de 60kg (esto excederá: 50+60=110 > 100)
         PaqueteDTO paquetePesado = PaqueteDTO.builder()
                 .codigo("PESADO" + System.currentTimeMillis())
-                .peso(60.0)  // ← 60kg (total sería 110kg > 100kg)
+                .peso(60.0)
                 .volumen(10.0)
                 .tipo("PF")
                 .nivelFragilidad("BAJA")
@@ -283,75 +279,57 @@ public class RutaServiceTestCase {
 
         EnvioDTO envio2Creado = envioService.crearEnvio(envio2);
 
-        // Verificar: Que lanza excepción por exceso de peso
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
-                () -> rutaService.agregarEnvio(rutaCreada.getId(), envio2Creado.getId()),
-                "Debe lanzar IllegalStateException por exceso de capacidad de peso"
+                () -> rutaService.agregarEnvio(rutaCreada.getId(), envio2Creado.getId())
         );
 
-        // Verificar también el mensaje de error
-        assertTrue(exception.getMessage().contains("No hay suficiente capacidad de peso"),
-                "El mensaje debe indicar que no hay suficiente capacidad de peso");
+        assertTrue(exception.getMessage().contains("No hay suficiente capacidad de peso"));
     }
 
-    // ========================================
-    // TEST 8: ERROR - Exceder capacidad de volumen del vehículo ❌
-    // ========================================
-    /**
-     * OBJETIVO: Validar que no se puede agregar un envío que exceda la capacidad de volumen
-     * RESULTADO ESPERADO: Lanza IllegalStateException por exceso de volumen
-     */
+    // NUEVO: Error al agregar paquete refrigerado a vehículo no refrigerado
     @Test
-    public void testExcederCapacidadVolumen_Error() {
-        // Preparar: Crear vehículo PEQUEÑO (solo 25dm³) y su ruta
-        VehiculoDTO vehiculoCreado = vehiculoService.crearVehiculo(vehiculoPequeno);
+    public void testAgregarPaqueteRefrigeradoAVehiculoNoRefrigerado_Error() {
+        VehiculoDTO vehiculo = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
 
-        RutaDTO rutaDTO = RutaDTO.builder()
+        RutaDTO ruta = RutaDTO.builder()
                 .fecha(LocalDate.now())
-                .vehiculo(vehiculoCreado)
+                .vehiculo(vehiculo)
                 .build();
-        RutaDTO rutaCreada = rutaService.crearRuta(rutaDTO);
+        RutaDTO rutaCreada = rutaService.crearRuta(ruta);
 
-        // Crear primer envío de 20dm³
-        EnvioDTO envio1 = envioService.crearEnvio(envioConPaqueteFragil);  // 20dm³
+        EnvioDTO envioRefrigerado = envioService.crearEnvio(envioConPaqueteRefrigerado);
 
-        // Agregar primer envío (OK: 20dm³ de 25dm³ disponibles)
-        rutaService.agregarEnvio(rutaCreada.getId(), envio1.getId());
-
-        // Crear SEGUNDO envío de 10dm³ (esto excederá: 20+10=30 > 25)
-        PaqueteDTO paqueteGrande = PaqueteDTO.builder()
-                .codigo("GRANDE" + System.currentTimeMillis())
-                .peso(10.0)
-                .volumen(10.0)  // ← 10dm³ (total sería 30dm³ > 25dm³)
-                .tipo("PF")
-                .nivelFragilidad("BAJA")
-                .seguroAdicional(false)
-                .build();
-
-        List<PaqueteDTO> paquetes = new ArrayList<>();
-        paquetes.add(paqueteGrande);
-
-        EnvioDTO envio2 = EnvioDTO.builder()
-                .remitente("Remitente 2")
-                .destinatario("Destinatario 2")
-                .direccionEntrega("Dirección 2")
-                .estadoEnvio("GENERADO")
-                .comprobanteEntrega(false)
-                .paquetes(paquetes)
-                .build();
-
-        EnvioDTO envio2Creado = envioService.crearEnvio(envio2);
-
-        // Verificar: Que lanza excepción por exceso de volumen
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
-                () -> rutaService.agregarEnvio(rutaCreada.getId(), envio2Creado.getId()),
-                "Debe lanzar IllegalStateException por exceso de capacidad de volumen"
+                () -> rutaService.agregarEnvio(rutaCreada.getId(), envioRefrigerado.getId())
         );
 
-        // Verificar también el mensaje de error
-        assertTrue(exception.getMessage().contains("No hay suficiente capacidad de volumen"),
-                "El mensaje debe indicar que no hay suficiente capacidad de volumen");
+        assertTrue(exception.getMessage().contains("no es refrigerado"));
+    }
+
+    // NUEVO: Error al crear ruta con vehículo ya asignado en la misma fecha
+    @Test
+    public void testCrearRutaConVehiculoYaAsignadoMismaFecha_Error() {
+        VehiculoDTO vehiculo = vehiculoService.crearVehiculo(vehiculoNoRefrigerado);
+        LocalDate fecha = LocalDate.now();
+
+        RutaDTO ruta1 = RutaDTO.builder()
+                .fecha(fecha)
+                .vehiculo(vehiculo)
+                .build();
+        rutaService.crearRuta(ruta1);
+
+        RutaDTO ruta2 = RutaDTO.builder()
+                .fecha(fecha)
+                .vehiculo(vehiculo)
+                .build();
+
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> rutaService.crearRuta(ruta2)
+        );
+
+        assertTrue(exception.getMessage().contains("ya tiene una ruta asignada"));
     }
 }

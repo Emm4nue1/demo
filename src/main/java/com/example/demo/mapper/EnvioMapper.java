@@ -14,6 +14,7 @@ public class EnvioMapper {
     public static EnvioDTO toDto(Envio envio){
 
         EnvioDTO dto= new EnvioDTO();
+        dto.setId(envio.getId());
         dto.setRemitente(envio.getRemitente());
         dto.setDestinatario(envio.getDestinatario());
         dto.setDireccionEntrega(envio.getDireccionEntrega());

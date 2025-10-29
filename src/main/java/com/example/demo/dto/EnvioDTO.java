@@ -7,7 +7,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class EnvioDTO {
-
+    private Long id;
     private String remitente;
     private String destinatario;
     private String direccionEntrega;
