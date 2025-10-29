@@ -19,18 +19,18 @@ import lombok.experimental.SuperBuilder;
 public class PaqueteRefrigerado extends Paquete {
 
     @PositiveOrZero
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double temperaturaObjetivo;
 
     @PositiveOrZero
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double rangoMinimo;
 
     @PositiveOrZero
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double rangoMaximo;
 
     @PositiveOrZero
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer maxHsFueraFrio;
 }

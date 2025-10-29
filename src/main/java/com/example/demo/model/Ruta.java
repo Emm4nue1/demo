@@ -1,9 +1,7 @@
 package com.example.demo.model;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class Ruta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @PastOrPresent
+    @NotNull
     @Column(nullable = false)
     private LocalDate fecha;
 

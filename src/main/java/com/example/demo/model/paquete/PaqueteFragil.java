@@ -15,9 +15,9 @@ import lombok.*;
 public class PaqueteFragil extends Paquete {
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private NivelFragilidad nivelFragilidad;
 
-    @NotNull
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Boolean seguroAdicional;
 }
