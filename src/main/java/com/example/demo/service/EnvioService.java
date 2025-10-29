@@ -23,9 +23,6 @@ public class EnvioService {
     @Transactional
     public EnvioDTO crearEnvio(EnvioDTO envioDTO) {
         Envio envio = EnvioMapper.toEntity(envioDTO);
-        if(envio.getPaquetes().size()<=0){
-            throw new IllegalStateException("No pueden existir envios sin paquetes");
-        }
         envio=envioRepository.save(envio);
         return  EnvioMapper.toDto(envio);
     }

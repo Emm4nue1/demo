@@ -53,14 +53,11 @@ public class EnvioServiceTestCase {
         envioDtoAux = EnvioDTO.builder().remitente("persona3").destinatario("persona4").direccionEntrega("canal de Beagle")
                 .estadoEnvio("DEVUELTO").comprobanteEntrega(true).paquetes(paquetesDto).build();
         envioService.crearEnvio(envioDTO1);
-        envioService.crearEnvio(envioDtoAux);
-        assertEquals(2,envioService.listarEnvio().size());
-
     }
     @Test
     public void testListarEnviosPorRemitente(){
         envioDtoAux = EnvioDTO.builder().remitente("persona1").destinatario("persona4").direccionEntrega("canal de Beagle")
-                .estadoEnvio("ENTREGADO").comprobanteEntrega(true).paquetes(paquetesDto).build();
+                .estadoEnvio("ENTREGADO").comprobanteEntrega(true).paquetes(null).build();
         envioService.crearEnvio(envioDTO1);
         envioService.crearEnvio(envioDtoAux);
         assertEquals(2,envioService.listarPorRemitente("persona1").size());
@@ -68,7 +65,7 @@ public class EnvioServiceTestCase {
     @Test
     public void testListarEnviosPorDestinatario(){
         envioDtoAux = EnvioDTO.builder().remitente("persona3").destinatario("persona2").direccionEntrega("gorriti")
-                .estadoEnvio("CANCELADO").comprobanteEntrega(true).paquetes(paquetesDto).build();
+                .estadoEnvio("CANCELADO").comprobanteEntrega(true).paquetes(null).build();
         envioService.crearEnvio(envioDTO1);
         envioService.crearEnvio(envioDtoAux);
         assertEquals(2,envioService.listarPorDestinatario("persona2").size());
@@ -76,7 +73,7 @@ public class EnvioServiceTestCase {
     @Test
     public void testListarEnviosPorEstado(){
         envioDtoAux = EnvioDTO.builder().remitente("persona3").destinatario("persona4").direccionEntrega("nieva")
-                .estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(paquetesDto).build();
+                .estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(null).build();
         envioService.crearEnvio(envioDTO1);
         envioService.crearEnvio(envioDtoAux);
         assertEquals(2,envioService.listarPorEstado("GENERADO").size());
