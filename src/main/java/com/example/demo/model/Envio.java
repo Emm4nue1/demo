@@ -20,18 +20,19 @@ public class Envio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false,length = 100)
-    private String remitente;
+    @ManyToOne
+    @JoinColumn(name="remitente_id",nullable = false)
+    private Cliente remitente;
 
-    @NotBlank
-    @Column(nullable = false,length = 100)
-    private String destinatario;
+    @ManyToOne
+    @JoinColumn(name="destinatario_id",nullable = false)
+    private Cliente destinatario;
 
     @NotBlank
     @Column(nullable = false,length = 100)
     private String direccionEntrega;
 
+    //verificar
     @Column(nullable = false,length = 100)
     private EnvioEstado estadoEnvio;
 
