@@ -23,7 +23,7 @@ public class PaqueteService {
     public PaqueteDTO crearPaquete(PaqueteDTO paqueteDTO) {
         //se encarga de las excepciones
         gestionExceptionsPaquete(paqueteDTO);
-
+        //sigue igual
         Paquete paquete = PaqueteMapper.toEntity(paqueteDTO);
         Paquete paqueteAux = paqueteRepository.save(paquete);
         return PaqueteMapper.toDto(paqueteAux);

@@ -32,6 +32,7 @@ public class EnvioServiceTestCase {
 
     @BeforeEach
     public void setUp() {
+        //solamente cargamos los paquetes
         paqueteDTO1= PaqueteDTO.builder().codigo("H123").peso(50).volumen(30).
                 nivelFragilidad("BAJA").seguroAdicional(true).tipo("PF").build();
         paqueteDTO2= PaqueteDTO.builder().codigo("GG123").peso(50).volumen(30).
