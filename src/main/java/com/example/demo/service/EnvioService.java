@@ -4,7 +4,6 @@ import com.example.demo.dto.EnvioDTO;
 import jakarta.transaction.Transactional;
 import com.example.demo.mapper.EnvioMapper;
 import com.example.demo.model.Envio;
-import com.example.demo.model.enums.EstadoEnvio;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.EnvioRepository;
 import com.example.demo.repository.PaqueteRepository;
