@@ -21,21 +21,10 @@ public class PaqueteService {
 
     @Transactional
     public PaqueteDTO crearPaquete(PaqueteDTO paqueteDTO) {
-        paqueteRepository.findByCodigo(paqueteDTO.getCodigo()).ifPresent(paquete1 -> {
-            throw new IllegalArgumentException("Paquete existente");
-        });
+        //se encarga de las excepciones
+        gestionExceptionsPaquete(paqueteDTO);
+
         Paquete paquete = PaqueteMapper.toEntity(paqueteDTO);
-        if(paquete.getPeso()<0 || paquete.getVolumen()<0)
-            throw new IllegalStateException("Peso negativo");
-        if(paquete instanceof PaqueteRefrigerado){
-            PaqueteRefrigerado paqueteRefrigerado = (PaqueteRefrigerado) paquete;
-            if(paqueteRefrigerado.getTemperaturaObjetivo()<-100 || paqueteRefrigerado.getTemperaturaObjetivo()>100)
-                throw new IllegalStateException("Temperatura objetivo invalida");
-            if(paqueteRefrigerado.getRangoMaximo()<paqueteRefrigerado.getRangoMinimo())
-                throw new IllegalStateException("Error en seleccion de Rangos");
-            if(paqueteRefrigerado.getMaxHsFueraFrio()<0)
-                throw new IllegalStateException("La cantidad de horas fuera de frio no puede ser negativo");
-        }
         Paquete paqueteAux = paqueteRepository.save(paquete);
         return PaqueteMapper.toDto(paqueteAux);
     }
@@ -83,5 +72,22 @@ public class PaqueteService {
             listaPaqueteRangoDTO.add(PaqueteMapper.toDto(p));
         }
         return listaPaqueteRangoDTO;
+    }
+    private void gestionExceptionsPaquete(PaqueteDTO paqueteDTO){
+        paqueteRepository.findByCodigo(paqueteDTO.getCodigo()).ifPresent(paquete1 -> {
+            throw new IllegalArgumentException("Paquete existente");
+        });
+        Paquete paquete = PaqueteMapper.toEntity(paqueteDTO);
+        if(paquete.getPeso()<0 || paquete.getVolumen()<0)
+            throw new IllegalStateException("Peso negativo");
+        if(paquete instanceof PaqueteRefrigerado){
+            PaqueteRefrigerado paqueteRefrigerado = (PaqueteRefrigerado) paquete;
+            if(paqueteRefrigerado.getTemperaturaObjetivo()<-100 || paqueteRefrigerado.getTemperaturaObjetivo()>100)
+                throw new IllegalStateException("Temperatura objetivo invalida");
+            if(paqueteRefrigerado.getRangoMaximo()<paqueteRefrigerado.getRangoMinimo())
+                throw new IllegalStateException("Error en seleccion de Rangos");
+            if(paqueteRefrigerado.getMaxHsFueraFrio()<0)
+                throw new IllegalStateException("La cantidad de horas fuera de frio no puede ser negativo");
+        }
     }
 }
