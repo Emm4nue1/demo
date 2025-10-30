@@ -27,55 +27,89 @@ public class EnvioServiceTestCase {
     @Autowired
     private PaqueteService paqueteService;
 
-    PaqueteDTO paqueteDTO1;
-    EnvioDTO envioDtoAux;
-    EnvioDTO envioDTO1;
-    List<PaqueteDTO> paquetesDto;
+    PaqueteDTO paqueteDTO1, paqueteDTO2;
+    EnvioDTO envioDto, envioDto2;
 
     @BeforeEach
     public void setUp() {
+        //solamente cargamos los paquetes
         paqueteDTO1= PaqueteDTO.builder().codigo("H123").peso(50).volumen(30).
                 nivelFragilidad("BAJA").seguroAdicional(true).tipo("PF").build();
-        paquetesDto = new ArrayList<>();
-        paquetesDto.add(paqueteDTO1);
-        envioDTO1 = EnvioDTO.builder().remitente("persona1").destinatario("persona2").direccionEntrega("palpala")
-                .estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(paquetesDto).build();
-        envioDtoAux= null;
+        paqueteDTO2= PaqueteDTO.builder().codigo("GG123").peso(50).volumen(30).
+                nivelFragilidad("ALTA").seguroAdicional(false).tipo("PF").build();
     }
     @Test
     public void testCrearEnvio(){
-        envioDtoAux =envioService.crearEnvio(envioDTO1);
-        assertNotNull(envioDtoAux);
+        //generamos envio 1 y lo cargamos
+        List<PaqueteDTO> lista1 = new ArrayList<>();
+        lista1.add(paqueteDTO1);
+        envioDto = EnvioDTO.builder().remitente("persona1").destinatario("persona3").direccionEntrega("Rio Blanco").
+                estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(lista1).build();
+        assertNotNull(envioService.crearEnvio(envioDto));
     }
     @Test
     public void testListarEnvios(){
-
-        envioDtoAux = EnvioDTO.builder().remitente("persona3").destinatario("persona4").direccionEntrega("canal de Beagle")
-                .estadoEnvio("DEVUELTO").comprobanteEntrega(true).paquetes(paquetesDto).build();
-        envioService.crearEnvio(envioDTO1);
+        //generamos envio 1 y lo cargamos
+        List<PaqueteDTO> lista1 = new ArrayList<>();
+        lista1.add(paqueteDTO1);
+        envioDto = EnvioDTO.builder().remitente("persona1").destinatario("persona3").direccionEntrega("Rio Blanco").
+                estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(lista1).build();
+        assertNotNull(envioService.crearEnvio(envioDto));
+        //generamos envio 2 y lo cargamos
+        List<PaqueteDTO> lista2 = new ArrayList<>();
+        lista2.add(paqueteDTO2);
+        envioDto2 = EnvioDTO.builder().remitente("persona2").destinatario("persona4").direccionEntrega("Gorriti").
+                estadoEnvio("ENTREGADO").comprobanteEntrega(false).paquetes(lista2).build();
+        envioService.crearEnvio(envioDto2);
+        //asserts
+        assertEquals(2,envioService.listarEnvio().size());
     }
     @Test
     public void testListarEnviosPorRemitente(){
-        envioDtoAux = EnvioDTO.builder().remitente("persona1").destinatario("persona4").direccionEntrega("canal de Beagle")
-                .estadoEnvio("ENTREGADO").comprobanteEntrega(true).paquetes(null).build();
-        envioService.crearEnvio(envioDTO1);
-        envioService.crearEnvio(envioDtoAux);
+        //generamos envio 1 y lo cargamos
+        List<PaqueteDTO> lista1 = new ArrayList<>();
+        lista1.add(paqueteDTO1);
+        envioDto = EnvioDTO.builder().remitente("persona1").destinatario("persona3").direccionEntrega("Rio Blanco").
+                estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(lista1).build();
+        assertNotNull(envioService.crearEnvio(envioDto));
+        //generamos envio 2 y lo cargamos
+        List<PaqueteDTO> lista2 = new ArrayList<>();
+        lista2.add(paqueteDTO2);
+        envioDto2 = EnvioDTO.builder().remitente("persona1").destinatario("persona4").direccionEntrega("Gorriti").
+                estadoEnvio("ENTREGADO").comprobanteEntrega(false).paquetes(lista2).build();
+        envioService.crearEnvio(envioDto2);
         assertEquals(2,envioService.listarPorRemitente("persona1").size());
     }
     @Test
     public void testListarEnviosPorDestinatario(){
-        envioDtoAux = EnvioDTO.builder().remitente("persona3").destinatario("persona2").direccionEntrega("gorriti")
-                .estadoEnvio("CANCELADO").comprobanteEntrega(true).paquetes(null).build();
-        envioService.crearEnvio(envioDTO1);
-        envioService.crearEnvio(envioDtoAux);
-        assertEquals(2,envioService.listarPorDestinatario("persona2").size());
+        //generamos envio 1 y lo cargamos
+        List<PaqueteDTO> lista1 = new ArrayList<>();
+        lista1.add(paqueteDTO1);
+        envioDto = EnvioDTO.builder().remitente("persona1").destinatario("persona4").direccionEntrega("Rio Blanco").
+                estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(lista1).build();
+        assertNotNull(envioService.crearEnvio(envioDto));
+        //generamos envio 2 y lo cargamos
+        List<PaqueteDTO> lista2 = new ArrayList<>();
+        lista2.add(paqueteDTO2);
+        envioDto2 = EnvioDTO.builder().remitente("persona2").destinatario("persona4").direccionEntrega("Gorriti").
+                estadoEnvio("ENTREGADO").comprobanteEntrega(false).paquetes(lista2).build();
+        envioService.crearEnvio(envioDto2);
+        assertEquals(2,envioService.listarPorDestinatario("persona4").size());
     }
     @Test
     public void testListarEnviosPorEstado(){
-        envioDtoAux = EnvioDTO.builder().remitente("persona3").destinatario("persona4").direccionEntrega("nieva")
-                .estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(null).build();
-        envioService.crearEnvio(envioDTO1);
-        envioService.crearEnvio(envioDtoAux);
+        //generamos envio 1 y lo cargamos
+        List<PaqueteDTO> lista1 = new ArrayList<>();
+        lista1.add(paqueteDTO1);
+        envioDto = EnvioDTO.builder().remitente("persona1").destinatario("persona3").direccionEntrega("Rio Blanco").
+                estadoEnvio("GENERADO").comprobanteEntrega(true).paquetes(lista1).build();
+        assertNotNull(envioService.crearEnvio(envioDto));
+        //generamos envio 2 y lo cargamos
+        List<PaqueteDTO> lista2 = new ArrayList<>();
+        lista2.add(paqueteDTO2);
+        envioDto2 = EnvioDTO.builder().remitente("persona2").destinatario("persona4").direccionEntrega("Gorriti").
+                estadoEnvio("GENERADO").comprobanteEntrega(false).paquetes(lista2).build();
+        envioService.crearEnvio(envioDto2);
         assertEquals(2,envioService.listarPorEstado("GENERADO").size());
     }
 }
