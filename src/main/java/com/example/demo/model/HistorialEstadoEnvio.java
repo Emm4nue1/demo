@@ -19,15 +19,11 @@ public class HistorialEstadoEnvio {
     @JoinColumn(name = "envio_id", nullable = false)
     private Envio envio;
 
-    //corregir
-    @NotNull
-    @Column(nullable = false, length = 50)
+    @Transient
     private EnvioEstado estadoAnterior;
 
-    @NotNull
-    @Column(nullable = false, length = 50)
+    @Transient
     private EnvioEstado estadoNuevo;
-    //los estados
 
     @PastOrPresent
     @Column(nullable = false)

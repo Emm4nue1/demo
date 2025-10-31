@@ -32,8 +32,7 @@ public class Envio {
     @Column(nullable = false,length = 100)
     private String direccionEntrega;
 
-    //verificar
-    @Column(nullable = false,length = 100)
+    @Transient
     private EnvioEstado estadoEnvio;
 
     @Column(nullable = false)
@@ -47,9 +46,6 @@ public class Envio {
     @Column(nullable = false,length = 100)
     private String codPostal;
 
-    public Envio (EnvioEstado estado) {
-        this.estadoEnvio = estado;
-    }
     public void cambiarEstado(EnvioEstado estado) {
         estadoEnvio.procesar(this);
         this.estadoEnvio = estado;
