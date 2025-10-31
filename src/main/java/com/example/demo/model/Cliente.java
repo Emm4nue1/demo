@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table( name = "clientes",uniqueConstraints = {
@@ -11,6 +15,10 @@ import jakarta.validation.constraints.PositiveOrZero;
         @UniqueConstraint(name = "cl_clientes_email", columnNames = "emails")
 }
 )
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
