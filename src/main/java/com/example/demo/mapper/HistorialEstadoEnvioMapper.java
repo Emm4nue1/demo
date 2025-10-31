@@ -31,7 +31,7 @@ public class HistorialEstadoEnvioMapper {
         historialEstadoEnvio.setFecha(LocalDateTime.parse(historialEstadoEnvioDTO.getFecha()));
         return historialEstadoEnvio;
     }
-    private static EnvioEstado crearEstadoDesdeNombre(String nombre){
+    public static EnvioEstado crearEstadoDesdeNombre(String nombre){
         if (nombre == null)
             throw new IllegalArgumentException("El nombre del estado no puede ser nulo");
         if(nombre.equalsIgnoreCase("Generado"))
