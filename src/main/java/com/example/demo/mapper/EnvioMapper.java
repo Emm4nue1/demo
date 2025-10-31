@@ -2,7 +2,7 @@ package com.example.demo.mapper;
 import com.example.demo.dto.EnvioDTO;
 import com.example.demo.dto.PaqueteDTO;
 import com.example.demo.model.Envio;
-import com.example.demo.model.enums.EstadoEnvio;
+import com.example.demo.model.enviostate.*;
 import com.example.demo.model.paquete.Paquete;
 
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ public class EnvioMapper {
 
         EnvioDTO dto= new EnvioDTO();
         dto.setId(envio.getId());
-        dto.setRemitente(envio.getRemitente());
-        dto.setDestinatario(envio.getDestinatario());
+        dto.setRemitente(ClienteMapper.toDto(envio.getRemitente()));
+        dto.setDestinatario(ClienteMapper.toDto(envio.getDestinatario()));
         dto.setDireccionEntrega(envio.getDireccionEntrega());
         dto.setEstadoEnvio(envio.getEstadoEnvio().toString());
         dto.setComprobanteEntrega(envio.getComprobanteEntrega());
@@ -35,10 +35,10 @@ public class EnvioMapper {
     public static Envio toEntity(EnvioDTO dto){
 
         Envio envio= new Envio();
-        envio.setRemitente(dto.getRemitente());
-        envio.setDestinatario(dto.getDestinatario());
+        envio.setRemitente(ClienteMapper.toEntity(dto.getRemitente()));
+        envio.setDestinatario(ClienteMapper.toEntity(dto.getDestinatario()));
         envio.setDireccionEntrega(dto.getDireccionEntrega());
-        envio.setEstadoEnvio(EstadoEnvio.valueOf(dto.getEstadoEnvio()));
+        envio.setEstadoEnvio(HistorialEstadoEnvioMapper.crearEstadoDesdeNombre(dto.getEstadoEnvio()));
         envio.setComprobanteEntrega(dto.isComprobanteEntrega());
         if (dto.getPaquetes() != null) {
             List<Paquete> paquetes = new ArrayList<>();
