@@ -11,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table( name = "clientes",uniqueConstraints = {
-        @UniqueConstraint(name = "cl_clientes_dni", columnNames = "dnis"),
-        @UniqueConstraint(name = "cl_clientes_email", columnNames = "emails")
+        @UniqueConstraint(name = "cl_clientes_dni", columnNames = "dni"),
+        @UniqueConstraint(name = "cl_clientes_email", columnNames = "email")
 }
 )
 @Data

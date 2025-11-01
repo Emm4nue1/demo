@@ -8,5 +8,4 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HistorialEstadoEnvioRepository extends JpaRepository<HistorialEstadoEnvio,Long> {
-    List<HistorialEstadoEnvio> findByEnvio(HistorialEstadoEnvio envio);
 }

@@ -6,6 +6,7 @@ import com.example.demo.dto.HistorialEstadoEnvioDTO;
 import com.example.demo.model.Cliente;
 import com.example.demo.model.HistorialEstadoEnvio;
 import com.example.demo.model.enviostate.*;
+import com.example.demo.util.Utils;
 
 import java.time.LocalDateTime;
 
@@ -26,27 +27,10 @@ public class HistorialEstadoEnvioMapper {
         HistorialEstadoEnvio historialEstadoEnvio = new HistorialEstadoEnvio();
         historialEstadoEnvio.setId(historialEstadoEnvioDTO.getId());
         historialEstadoEnvio.setEnvio(EnvioMapper.toEntity(historialEstadoEnvioDTO.getEnvio()));
-        historialEstadoEnvio.setEstadoAnterior(crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoAnterior()));
-        historialEstadoEnvio.setEstadoNuevo(crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoNuevo()));
+        historialEstadoEnvio.setEstadoAnterior(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoAnterior()));
+        historialEstadoEnvio.setEstadoNuevo(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoNuevo()));
         historialEstadoEnvio.setFecha(LocalDateTime.parse(historialEstadoEnvioDTO.getFecha()));
         return historialEstadoEnvio;
     }
-    public static EnvioEstado crearEstadoDesdeNombre(String nombre){
-        if (nombre == null)
-            throw new IllegalArgumentException("El nombre del estado no puede ser nulo");
-        if(nombre.equalsIgnoreCase("Generado"))
-            return new Generado();
-        else if (nombre.equalsIgnoreCase("EnAlmacen"))
-            return new EnAlmacen();
-        else if (nombre.equalsIgnoreCase("Cancelado"))
-            return new Cancelado();
-        else if (nombre.equalsIgnoreCase("Devuelto"))
-            return new Devuelto();
-        else if (nombre.equalsIgnoreCase("EnRuta"))
-            return new EnRuta();
-        else if (nombre.equalsIgnoreCase("Entregado"))
-            return new Entregado();
-        else
-            throw new NullPointerException("Nombre invalido de conversion: " + nombre);
-    }
+
 }

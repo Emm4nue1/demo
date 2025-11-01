@@ -4,6 +4,7 @@ import com.example.demo.dto.PaqueteDTO;
 import com.example.demo.model.Envio;
 import com.example.demo.model.enviostate.*;
 import com.example.demo.model.paquete.Paquete;
+import com.example.demo.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class EnvioMapper {
         envio.setRemitente(ClienteMapper.toEntity(dto.getRemitente()));
         envio.setDestinatario(ClienteMapper.toEntity(dto.getDestinatario()));
         envio.setDireccionEntrega(dto.getDireccionEntrega());
-        envio.setEstadoEnvio(HistorialEstadoEnvioMapper.crearEstadoDesdeNombre(dto.getEstadoEnvio()));
+        envio.setEstadoEnvio(Utils.crearEstadoDesdeNombre(dto.getEstadoEnvio()));
         envio.setComprobanteEntrega(dto.isComprobanteEntrega());
         if (dto.getPaquetes() != null) {
             List<Paquete> paquetes = new ArrayList<>();
