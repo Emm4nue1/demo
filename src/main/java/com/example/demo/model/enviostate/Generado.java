@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Generado extends EnvioEstado {
     @Override
     public void procesar(Envio envio){
-        if(envio != null) {
+        if(envio.getEstadoEnvio() != null) {
             log.error("No puede tener un estado previo");
             throw new IllegalStateException("No puede tener un estado previo");
         }else

@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.EnvioDTO;
+import com.example.demo.dto.PaqueteDTO;
 import com.example.demo.model.enviostate.EnvioEstado;
+import com.example.demo.model.enviostate.Generado;
 import com.example.demo.util.Utils;
 import jakarta.transaction.Transactional;
 import com.example.demo.mapper.EnvioMapper;
@@ -23,11 +25,38 @@ public class EnvioService {
 
     @Transactional
     public EnvioDTO crearEnvio(EnvioDTO envioDTO) {
+        validacionesCrearEnvio(envioDTO);
         Envio envio = EnvioMapper.toEntity(envioDTO);
+        envio.cambiarEstado(new Generado());
         envio=envioRepository.save(envio);
         return  EnvioMapper.toDto(envio);
     }
 
+    private String generarHash(Envio envio) {
+        String cod = envio.getCodPostal();
+        int rand = (int)  (Math.random() * 9000) + 1000;
+        return cod + "-" + rand;
+    }
+
+    private void validacionesCrearEnvio(EnvioDTO envioDTO) {
+        validacionPesoyVolumen(envioDTO);
+    }
+
+    private void validacionPesoyVolumen(EnvioDTO envioDTO) {
+        List<PaqueteDTO> paqueteDTOs = envioDTO.getPaquetes();
+        for(PaqueteDTO paqueteDTO : paqueteDTOs){
+            if(paqueteDTO.getPeso()<=0 || paqueteDTO.getVolumen()<=0)
+                throw new IllegalStateException("Los paquetes tienen peso o volumen invalidos");
+        }
+    }
+    public boolean validacionPaqueteRefrigerado(EnvioDTO envioDTO) {
+        List<PaqueteDTO> paqueteDTOs = envioDTO.getPaquetes();
+        for(PaqueteDTO paqueteDTO : paqueteDTOs){
+            if(paqueteDTO.getTipo().equalsIgnoreCase("PaqueteRefrigerado"))
+                return true;
+        }
+        return false;
+    }
     @Transactional
     public List<EnvioDTO> listarEnvio(){
         List<Envio> envios = envioRepository.findAll();
