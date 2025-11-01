@@ -27,10 +27,10 @@ public class HistorialEstadoEnvio {
     @JoinColumn(name = "envio_id", nullable = false)
     private Envio envio;
 
-    @Transient
+    @Embedded
     private EnvioEstado estadoAnterior;
 
-    @Transient
+    @Embedded
     private EnvioEstado estadoNuevo;
 
     @PastOrPresent
