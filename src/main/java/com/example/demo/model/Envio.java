@@ -32,7 +32,7 @@ public class Envio {
     @Column(nullable = false,length = 100)
     private String direccionEntrega;
 
-    @Transient
+   @Embedded
     private EnvioEstado estadoEnvio;
 
     @Column(nullable = false)

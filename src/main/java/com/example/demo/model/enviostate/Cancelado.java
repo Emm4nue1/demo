@@ -1,9 +1,11 @@
 package com.example.demo.model.enviostate;
 
 import com.example.demo.model.Envio;
+import jakarta.persistence.Embeddable;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Embeddable
 public class Cancelado extends EnvioEstado{
     @Override
     public void procesar(Envio envio) {

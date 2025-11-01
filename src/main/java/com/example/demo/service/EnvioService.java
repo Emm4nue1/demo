@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.EnvioDTO;
+import com.example.demo.model.enviostate.EnvioEstado;
+import com.example.demo.util.Utils;
 import jakarta.transaction.Transactional;
 import com.example.demo.mapper.EnvioMapper;
 import com.example.demo.model.Envio;
@@ -58,7 +60,8 @@ public class EnvioService {
 
     @Transactional
     public List<EnvioDTO> listarPorEstado(String estado){
-        List<Envio> envios = envioRepository.findByEstadoEnvio(EstadoEnvio.valueOf(estado));
+        EnvioEstado estadoAux = Utils.crearEstadoDesdeNombre(estado);
+        List<Envio> envios = envioRepository.findByEstadoEnvio(estadoAux);
         List<EnvioDTO> listaEnvioDTO= new ArrayList<>();
         for (Envio envio : envios) {
             listaEnvioDTO.add(EnvioMapper.toDto(envio));
