@@ -7,8 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Embeddable
 public class Devuelto extends EnvioEstado {
+    public Devuelto() {
+        this.nombreEstado="DEVUELTO";
+    }
     @Override
     public void procesar(Envio envio) {
+
         if(!(envio.getEstadoEnvio() instanceof Entregado)) {
             log.error("Solo puede devolver Siempre que haya sido entregado");
             throw new IllegalStateException("Solo puede devolver Siempre que haya sido entregado");

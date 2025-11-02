@@ -28,9 +28,15 @@ public class HistorialEstadoEnvio {
     private Envio envio;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "nombreEstado", column = @Column(name = "estado_anterior_nombre"))
+    })
     private EnvioEstado estadoAnterior;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "nombreEstado", column = @Column(name = "estado_actual_nombre"))
+    })
     private EnvioEstado estadoNuevo;
 
     @PastOrPresent

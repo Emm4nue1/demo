@@ -19,7 +19,7 @@ public class EnvioMapper {
         dto.setRemitente(ClienteMapper.toDto(envio.getRemitente()));
         dto.setDestinatario(ClienteMapper.toDto(envio.getDestinatario()));
         dto.setDireccionEntrega(envio.getDireccionEntrega());
-        dto.setEstadoEnvio(envio.getEstadoEnvio().toString());
+        dto.setEstadoEnvio(envio.getEstadoEnvio().getNombreEstado());
         dto.setComprobanteEntrega(envio.getComprobanteEntrega());
         if (envio.getPaquetes() != null) {
             List<PaqueteDTO> paquetesDTO = new ArrayList<>();

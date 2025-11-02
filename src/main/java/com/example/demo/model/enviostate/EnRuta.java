@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Embeddable
 public class EnRuta extends EnvioEstado {
+    public EnRuta() {
+        this.nombreEstado="ENRUTA";
+    }
     @Override
     public void procesar(Envio envio) {
         if(!(envio.getEstadoEnvio() instanceof EnAlmacen)) {
