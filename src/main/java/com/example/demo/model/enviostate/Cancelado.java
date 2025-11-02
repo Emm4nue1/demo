@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Embeddable
 public class Cancelado extends EnvioEstado{
+
     @Override
     public void procesar(Envio envio) {
         if(!(envio.getEstadoEnvio() instanceof Generado)) {

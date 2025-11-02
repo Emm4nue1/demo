@@ -7,6 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Embeddable
 public class Generado extends EnvioEstado {
+    public Generado() {
+        this.nombreEstado="GENERADO";
+    }
+
     @Override
     public void procesar(Envio envio){
         if(envio.getEstadoEnvio() != null) {

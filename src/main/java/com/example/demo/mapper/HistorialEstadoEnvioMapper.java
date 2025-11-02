@@ -16,8 +16,8 @@ public class HistorialEstadoEnvioMapper {
         HistorialEstadoEnvioDTO historialEstadoEnvioDTO = new HistorialEstadoEnvioDTO();
         historialEstadoEnvioDTO.setId(historialEstadoEnvio.getId());
         historialEstadoEnvioDTO.setEnvio(EnvioMapper.toDto(historialEstadoEnvio.getEnvio()));
-        historialEstadoEnvioDTO.setEstadoAnterior(historialEstadoEnvio.getEstadoAnterior().getClass().getSimpleName());
-        historialEstadoEnvioDTO.setEstadoNuevo(historialEstadoEnvio.getEstadoNuevo().getClass().getSimpleName());
+        historialEstadoEnvioDTO.setEstadoAnterior(historialEstadoEnvio.getEstadoAnterior().getNombreEstado());
+        historialEstadoEnvioDTO.setEstadoNuevo(historialEstadoEnvio.getEstadoNuevo().getNombreEstado());
         historialEstadoEnvioDTO.setFecha(historialEstadoEnvio.getFecha().toString());
         return historialEstadoEnvioDTO;
     }

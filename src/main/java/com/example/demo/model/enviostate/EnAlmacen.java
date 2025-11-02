@@ -7,6 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Embeddable
 public class EnAlmacen extends EnvioEstado {
+    public EnAlmacen() {
+        this.nombreEstado="ENALMACEN";
+    }
+
     @Override
     public void procesar(Envio envio){
         if(!(envio.getEstadoEnvio() instanceof Generado)) {
