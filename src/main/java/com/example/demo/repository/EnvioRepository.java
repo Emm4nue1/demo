@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.Cliente;
 import com.example.demo.model.Envio;
 import com.example.demo.model.enviostate.EnvioEstado;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface EnvioRepository extends JpaRepository<Envio,Long> {
-    List<Envio> findByRemitente(String remitente);
-    List<Envio> findByDestinatario(String destinatario);
+    List<Envio> findByRemitente(Cliente remitente);
+    List<Envio> findByDestinatario(Cliente destinatario);
     List<Envio> findByEstadoEnvio(EnvioEstado estado);
 }

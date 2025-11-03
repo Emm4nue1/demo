@@ -46,9 +46,14 @@ public class Envio {
     @Column(nullable = false,length = 100)
     private String codPostal;
 
+    // NUEVOS
+    @Column(name = "identificador_unico", unique = true, length = 50)
+    private String identificadorUnico;
+
+    @Column(name = "requiere_frio", nullable = false)
+    private Boolean requiereFrio = false;
     public void cambiarEstado(EnvioEstado estado) {
         estado.procesar(this);
-        this.estadoEnvio = estado;
-
+        setEstadoEnvio(estado);
     }
 }

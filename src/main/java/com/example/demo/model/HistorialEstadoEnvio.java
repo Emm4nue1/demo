@@ -23,7 +23,8 @@ public class HistorialEstadoEnvio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    //Cambio de @OneToOne a @ManyToOne porque un envío puede tener múltiples cambios de estado
+    @ManyToOne
     @JoinColumn(name = "envio_id", nullable = false)
     private Envio envio;
 
@@ -43,7 +44,6 @@ public class HistorialEstadoEnvio {
     @Column(nullable = false)
     private LocalDateTime fecha;
 
-    @NotBlank
-    @Column(nullable = false, length = 50)
+    @Column(nullable = true, length = 50)
     private String observacion;
 }

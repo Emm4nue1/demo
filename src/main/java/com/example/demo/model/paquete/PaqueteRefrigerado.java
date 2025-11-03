@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class PaqueteRefrigerado extends Paquete {
 
-    @PositiveOrZero
+    //Sin @PositiveOrZero porque las temperaturas pueden ser negativas
     @Column(nullable = true)
     private Double temperaturaObjetivo;
 
