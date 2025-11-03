@@ -47,8 +47,8 @@ public class Envio {
     private String codPostal;
 
     public void cambiarEstado(EnvioEstado estado) {
-        if(estadoEnvio!=null)
-            estado.procesar(this);
+        estado.procesar(this);
         this.estadoEnvio = estado;
+
     }
 }

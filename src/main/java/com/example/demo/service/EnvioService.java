@@ -1,7 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.EnvioDTO;
+import com.example.demo.dto.HistorialEstadoEnvioDTO;
 import com.example.demo.dto.PaqueteDTO;
+import com.example.demo.model.HistorialEstadoEnvio;
+import com.example.demo.model.enviostate.Cancelado;
 import com.example.demo.model.enviostate.EnvioEstado;
 import com.example.demo.model.enviostate.Generado;
 import com.example.demo.util.Utils;
@@ -19,8 +22,10 @@ import java.util.List;
 public class EnvioService {
 
     private final EnvioRepository envioRepository;
-    public EnvioService(EnvioRepository envioRepository, PaqueteRepository paqueteRepository) {
+    private final HistorialEstadoEnvioService historialEstadoEnvioService;
+    public EnvioService(EnvioRepository envioRepository, HistorialEstadoEnvioService historialEstadoEnvioService) {
         this.envioRepository = envioRepository;
+        this.historialEstadoEnvioService = historialEstadoEnvioService;
     }
 
     @Transactional
@@ -29,6 +34,10 @@ public class EnvioService {
         Envio envio = EnvioMapper.toEntity(envioDTO);
         envio.cambiarEstado(new Generado());
         envio=envioRepository.save(envio);
+        HistorialEstadoEnvioDTO historialEstadoEnvioNuevo = new HistorialEstadoEnvioDTO();
+        historialEstadoEnvioNuevo.setEnvio(EnvioMapper.toDto(envio));
+        historialEstadoEnvioNuevo.setEstadoNuevo("GENERADO");
+        historialEstadoEnvioService.crearHistorialEstadoEnvio(historialEstadoEnvioNuevo);
         return  EnvioMapper.toDto(envio);
     }
 
@@ -97,4 +106,19 @@ public class EnvioService {
         }
         return listaEnvioDTO;
     }
+
+    @Transactional
+    public EnvioDTO cancelarEnvio(EnvioDTO envioDTO){
+        Envio envio = envioRepository.findById(envioDTO.getId()).orElseThrow(() -> new IllegalStateException("Envio no encontrado"));
+        String estadoAnterior = Utils.obtenerNombreDesdeEstado(envio.getEstadoEnvio());
+        envio.cambiarEstado(new Cancelado());
+        HistorialEstadoEnvioDTO historialEstadoEnvio = new HistorialEstadoEnvioDTO();
+        historialEstadoEnvio.setEnvio(EnvioMapper.toDto(envio));
+        historialEstadoEnvio.setEstadoAnterior(estadoAnterior);
+        historialEstadoEnvio.setEstadoNuevo("CANCELADO");
+        historialEstadoEnvioService.crearHistorialEstadoEnvio(historialEstadoEnvio);
+        envioRepository.save(envio);
+        return EnvioMapper.toDto(envio);
+    }
+
 }
