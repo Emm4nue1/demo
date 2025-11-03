@@ -11,22 +11,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteMapper {
-    //convertimos de una entidad Cliente en DTO
+    // Convertimos de entidad Cliente a DTO
     public static ClienteDTO toDto(Cliente cliente){
         ClienteDTO clienteDTO = new ClienteDTO();
         clienteDTO.setId(cliente.getId());
+        clienteDTO.setNombre(cliente.getNombre());
+        clienteDTO.setApellido(cliente.getApellido());
         clienteDTO.setDni(cliente.getDni());
         clienteDTO.setEmail(cliente.getEmail());
+        clienteDTO.setCalle(cliente.getCalle());
+        clienteDTO.setNumCasa(cliente.getNumCasa());
         clienteDTO.setCodPostal(cliente.getCodPostal());
         return clienteDTO;
     }
 
-    //convertimos de DTO a entidad Cliente
+    // Convertimos de DTO a entidad Cliente
     public static Cliente toEntity(ClienteDTO clienteDTO){
         Cliente cliente = new Cliente();
         cliente.setId(clienteDTO.getId());
+        cliente.setNombre(clienteDTO.getNombre());
+        cliente.setApellido(clienteDTO.getApellido());
         cliente.setDni(clienteDTO.getDni());
         cliente.setEmail(clienteDTO.getEmail());
+        cliente.setCalle(clienteDTO.getCalle());
+        cliente.setNumCasa(clienteDTO.getNumCasa());
         cliente.setCodPostal(clienteDTO.getCodPostal());
         return cliente;
     }

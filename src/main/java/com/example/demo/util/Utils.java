@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utils {
     public static EnvioEstado crearEstadoDesdeNombre(String nombre){
-        if (nombre == null)
-            throw new IllegalArgumentException("El nombre del estado no puede ser nulo");
+        if (nombre == null || nombre.isEmpty())
+            return new Generado();
         if(nombre.equalsIgnoreCase("Generado"))
             return new Generado();
         else if (nombre.equalsIgnoreCase("EnAlmacen"))

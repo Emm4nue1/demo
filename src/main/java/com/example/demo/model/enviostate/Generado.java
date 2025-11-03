@@ -13,7 +13,7 @@ public class Generado extends EnvioEstado {
 
     @Override
     public void procesar(Envio envio){
-        if(envio.getEstadoEnvio() != null) {
+        if(envio.getEstadoEnvio() != null && !(envio.getEstadoEnvio() instanceof Generado)) {
             log.error("No puede tener un estado previo");
             throw new IllegalStateException("No puede tener un estado previo");
         }else

@@ -21,4 +21,6 @@ public class HistorialEstadoEnvioDTO {
     private String estadoAnterior;
     private String estadoNuevo;
     private String fecha;
+
+    private String observacion;
 }
