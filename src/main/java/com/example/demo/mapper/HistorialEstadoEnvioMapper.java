@@ -27,9 +27,22 @@ public class HistorialEstadoEnvioMapper {
         HistorialEstadoEnvio historialEstadoEnvio = new HistorialEstadoEnvio();
         historialEstadoEnvio.setId(historialEstadoEnvioDTO.getId());
         historialEstadoEnvio.setEnvio(EnvioMapper.toEntity(historialEstadoEnvioDTO.getEnvio()));
-        historialEstadoEnvio.setEstadoAnterior(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoAnterior()));
-        historialEstadoEnvio.setEstadoNuevo(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoNuevo()));
-        historialEstadoEnvio.setFecha(LocalDateTime.parse(historialEstadoEnvioDTO.getFecha()));
+        // CORRECCIÓN: Validar que estadoAnterior no sea null antes de parsear
+        if (historialEstadoEnvioDTO.getEstadoAnterior() != null && !historialEstadoEnvioDTO.getEstadoAnterior().isEmpty()) {
+            historialEstadoEnvio.setEstadoAnterior(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoAnterior()));
+        }
+
+        if (historialEstadoEnvioDTO.getEstadoNuevo() != null) {
+            historialEstadoEnvio.setEstadoNuevo(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoNuevo()));
+        }
+
+        // CORRECCIÓN: Validar que la fecha no sea null antes de parsear
+        if (historialEstadoEnvioDTO.getFecha() != null && !historialEstadoEnvioDTO.getFecha().isEmpty()) {
+            historialEstadoEnvio.setFecha(LocalDateTime.parse(historialEstadoEnvioDTO.getFecha()));
+        }
+        // Si la fecha es null, se asignará en el service con LocalDateTime.now()
+
+        historialEstadoEnvio.setObservacion(historialEstadoEnvioDTO.getObservacion());
         return historialEstadoEnvio;
     }
 
