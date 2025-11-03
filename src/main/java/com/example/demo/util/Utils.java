@@ -24,4 +24,26 @@ public class Utils {
         else
             throw new NullPointerException("Nombre invalido de conversion: " + nombre);
     }
+    public static String obtenerNombreDesdeEstado(EnvioEstado estado) {
+        if (estado == null)
+            throw new IllegalArgumentException("El estado no puede ser nulo");
+
+        if (estado.getNombreEstado() != null)
+            return estado.getNombreEstado();
+
+        if (estado instanceof Generado)
+            return "GENERADO";
+        else if (estado instanceof EnAlmacen)
+            return "ENALMACEN";
+        else if (estado instanceof EnRuta)
+            return "ENRUTA";
+        else if (estado instanceof Entregado)
+            return "ENTREGADO";
+        else if (estado instanceof Cancelado)
+            return "CANCELADO";
+        else if (estado instanceof Devuelto)
+            return "DEVUELTO";
+        else
+            throw new IllegalArgumentException("Tipo de estado desconocido: " + estado.getClass().getSimpleName());
+    }
 }

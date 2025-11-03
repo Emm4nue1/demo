@@ -6,6 +6,7 @@ import com.example.demo.model.HistorialEstadoEnvio;
 import com.example.demo.model.enviostate.EnvioEstado;
 import com.example.demo.repository.EnvioRepository;
 import com.example.demo.repository.HistorialEstadoEnvioRepository;
+import com.example.demo.util.Utils;
 import jakarta.persistence.Entity;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -23,17 +24,24 @@ public class HistorialEstadoEnvioService {
     }
 
     @Transactional
-    public HistorialEstadoEnvioDTO crearHistorialEstadoEnvio(HistorialEstadoEnvioDTO historialEstadoEnvioDTO, EnvioEstado estadoAnterior) {
+    public HistorialEstadoEnvioDTO crearHistorialEstadoEnvio(HistorialEstadoEnvioDTO historialEstadoEnvioDTO) {
+
         validacionCrearHistorialEstadoEnvio(historialEstadoEnvioDTO);
         HistorialEstadoEnvio historialEstadoEnvio = HistorialEstadoEnvioMapper.toEntity(historialEstadoEnvioDTO);
-        historialEstadoEnvio.setEstadoAnterior(estadoAnterior);
+
+        if(historialEstadoEnvioDTO.getEstadoNuevo()!=null)
+            historialEstadoEnvio.setEstadoNuevo(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoNuevo()));
+        if(historialEstadoEnvioDTO.getEstadoAnterior()!=null)
+            historialEstadoEnvio.setEstadoAnterior(Utils.crearEstadoDesdeNombre(historialEstadoEnvioDTO.getEstadoAnterior()));
+
         if(historialEstadoEnvio.getFecha()==null)
             historialEstadoEnvio.setFecha(LocalDateTime.now());
+
         historialEstadoEnvioRepository.save(historialEstadoEnvio);
         return HistorialEstadoEnvioMapper.toDto(historialEstadoEnvio);
     }
 
-    private void validacionCrearHistorialEstadoEnvio(HistorialEstadoEnvioDTO historialEstadoEnvioDTO){
+    private  void validacionCrearHistorialEstadoEnvio(HistorialEstadoEnvioDTO historialEstadoEnvioDTO){
         if(historialEstadoEnvioDTO.getEnvio() == null)
             throw new IllegalArgumentException("El envío asociado al historial no puede ser nulo");
     }
