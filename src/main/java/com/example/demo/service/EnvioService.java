@@ -35,18 +35,21 @@ public class EnvioService {
         validacionesCrearEnvio(envioDTO);
         Envio envio = EnvioMapper.toEntity(envioDTO);
 
-        // CORRECCIÓN: Generar identificador único usando el método generarHash
+        // Generar identificador único
         envio.setIdentificadorUnico(generarHash(envio));
 
-        // CORRECCIÓN: Detectar si requiere frío automáticamente
+        // Detectar si requiere frío
         envio.setRequiereFrio(tienePackageRefrigerado(envio.getPaquetes()));
 
+        // Cambiar estado
         envio.cambiarEstado(new Generado());
+
+        //GUARDAR PRIMERO para que tenga ID
         envio = envioRepository.save(envio);
 
-        // CORRECCIÓN: Crear historial con observación
+        //crear el historial (el envío ya tiene ID)
         HistorialEstadoEnvioDTO historialEstadoEnvioNuevo = new HistorialEstadoEnvioDTO();
-        historialEstadoEnvioNuevo.setEnvio(EnvioMapper.toDto(envio));
+        historialEstadoEnvioNuevo.setEnvio(EnvioMapper.toDto(envio)); // ✅ Ahora tiene ID
         historialEstadoEnvioNuevo.setEstadoNuevo("GENERADO");
         historialEstadoEnvioNuevo.setObservacion("Envío creado");
         historialEstadoEnvioService.crearHistorialEstadoEnvio(historialEstadoEnvioNuevo);
@@ -135,10 +138,16 @@ public class EnvioService {
 
     @Transactional
     public EnvioDTO cancelarEnvio(EnvioDTO envioDTO){
-        Envio envio = envioRepository.findById(envioDTO.getId()).orElseThrow(() -> new IllegalStateException("Envio no encontrado"));
+        Envio envio = envioRepository.findById(envioDTO.getId())
+                .orElseThrow(() -> new IllegalStateException("Envio no encontrado"));
+
         String estadoAnterior = Utils.obtenerNombreDesdeEstado(envio.getEstadoEnvio());
         envio.cambiarEstado(new Cancelado());
 
+        // ⭐ GUARDAR PRIMERO
+        envio = envioRepository.save(envio);
+
+        // ⭐ LUEGO crear historial
         HistorialEstadoEnvioDTO historialEstadoEnvio = new HistorialEstadoEnvioDTO();
         historialEstadoEnvio.setEnvio(EnvioMapper.toDto(envio));
         historialEstadoEnvio.setEstadoAnterior(estadoAnterior);
@@ -146,7 +155,6 @@ public class EnvioService {
         historialEstadoEnvio.setObservacion("Envío cancelado");
         historialEstadoEnvioService.crearHistorialEstadoEnvio(historialEstadoEnvio);
 
-        envioRepository.save(envio);
         return EnvioMapper.toDto(envio);
     }
 }

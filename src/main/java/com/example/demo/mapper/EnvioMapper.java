@@ -60,8 +60,6 @@ public class EnvioMapper {
             envio.setRequiereFrio(false);
         }
 
-
-        envio.setCodPostal(dto.getCodPostal());
         if (dto.getPaquetes() != null) {
             List<Paquete> paquetes = new ArrayList<>();
             for (PaqueteDTO pDto : dto.getPaquetes()) {
