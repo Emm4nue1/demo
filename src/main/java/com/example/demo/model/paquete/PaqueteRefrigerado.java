@@ -22,11 +22,11 @@ public class PaqueteRefrigerado extends Paquete {
     @Column(nullable = true)
     private Double temperaturaObjetivo;
 
-    @PositiveOrZero
+    //@PositiveOrZero
     @Column(nullable = true)
     private Double rangoMinimo;
 
-    @PositiveOrZero
+    //@PositiveOrZero
     @Column(nullable = true)
     private Double rangoMaximo;
 
